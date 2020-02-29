@@ -2,7 +2,7 @@
 # 
 # 建立一個簡單的GUI介面，有清單選項可以選擇，並將選擇結果輸出於顯示列
 # 
-# 該程式碼會用到 StingVar() 物件，該物件可以追蹤變數的更動
+# 該程式碼會用到 StringVar() 物件，該物件可以追蹤變數的更動
 # 以 ListBox() 建立清單物件，並透過該物件方法 get() 以及 curselection()
 # 獲取當前選擇的清單內容
 # 
@@ -37,12 +37,13 @@ def main():
 
     # 產生清單物件：提供選項清單
     content = ['A', 'B', 'C', 'D']
-    select_list = tkinter.StringVar()
+    select_list = tkinter.StringVar()  # StingVar() 是一個能被追蹤變動的物件
     select_list.set(tuple(content))  # 此範例清單用 tuple 型態(這樣值就不會被變更)
     list_box = tkinter.Listbox(window, listvariable=select_list)
     list_box.place(relx=0.5, rely=0.4, anchor='n')  # 將上方點作為卯釘點
 
 
+    # 將使用者輸入的內容新增至清單中
     def add_new_item():
         msg = user_input.get()
         if msg != '' and msg not in select_list.get():
