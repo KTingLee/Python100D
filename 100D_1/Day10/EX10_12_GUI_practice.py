@@ -28,7 +28,6 @@ def change_pic_size(image_path, window_width):
     return tk_image
 
 
-
 def main():
     # 點選登入按鈕的功能函數
     def log_in():
@@ -53,15 +52,105 @@ def main():
         else:
             tkinter.messagebox.showerror(title='登入失敗', message='帳號密碼錯誤，沒有該用戶名稱或密碼錯誤，請再試一次！')
 
+        if user_id == 'admin':
+            members_window = tkinter.Toplevel(window)
+            members_window.geometry(newGeometry='500x600+3200+300')
+            members_window.title('會員清單')
+
+            # 製作會員清單
+            with open('./res/user_info.pickle', 'rb') as user_file:
+                    user_info = pickle.load(user_file)
+            var_member_list = tkinter.StringVar()
+            var_member_list.set(tuple(user_info.keys()))
+            member_list = tkinter.Listbox(members_window, listvariable=var_member_list, relief='raised')
+            member_list.pack(side='left', expand=False, fill='y')
+
+            var_member_pwd = tkinter.StringVar()
+            var_member_pwd.set(tuple(user_info.values()))
+            member_pwd_list = tkinter.Listbox(members_window, listvariable=var_member_pwd, relief='solid')
+            member_pwd_list.pack(side='left', expand=False, fill='y')
+
+
 
 
     # 點選註冊按鈕的功能函數
     def sign_up():
+        # 註冊為新會員
+        def add_member():
+            new_id = var_new_id.get()
+            new_pwd = var_new_password.get()
+            new_conf_pwd = var_conf_password.get()
+            try:
+                with open('./res/user_info.pickle', 'rb') as user_file:
+                    user_info = pickle.load(user_file)
+            except FileNotFoundError as error:
+                tkinter.messagebox.showwarning(title='警告', message='尚未擁有任何使用者資料，準備開始建立...')
+                with open('./res/user_info.pickle', 'wb') as user_file:
+                    user_info = {'admin':'admin'}  # 建立管理者帳密，帳密皆採字串格式，儲存採用字典形式
+                    pickle.dump(user_info, user_file)
+            finally:
+                with open('./res/user_info.pickle', 'rb') as user_file:
+                    user_info = pickle.load(user_file)
+
+            if new_pwd == '':
+                tkinter.messagebox.showwarning(title='警告', message='密碼不能空白')
+            elif new_pwd != new_conf_pwd:
+                tkinter.messagebox.showwarning(title='警告', message='請輸入相同密碼')
+            elif '@gmail.com' not in new_id:
+                tkinter.messagebox.showerror(title='註冊失敗', message='請使用Gmail註冊。')
+            elif new_id in user_info:
+                tkinter.messagebox.showerror(title='註冊失敗', message='該用戶已存在，請使用其他用戶名稱。')
+            elif new_pwd == new_conf_pwd:
+                user_info[new_id] = new_pwd
+                with open('./res/user_info.pickle', 'wb') as user_file:
+                    pickle.dump(user_info, user_file)
+                tkinter.messagebox.showinfo(title='註冊成功', message='回到登入畫面！')
+                sign_up_window.destroy()  # 關閉視窗
+
+
+        # 取消註冊
+        def cancel_sign_up():
+            keep_sign_up = tkinter.messagebox.askquestion(title='離開', message='你依依不捨地離開註冊畫面...')
+            if keep_sign_up == 'yes':
+                sign_up_window.destroy()  # 關閉視窗
+
+
         sign_up_window = tkinter.Toplevel(window)  # 於主視窗下，彈出新的視窗
-        sign_up_window.geometry(newGeometry='300x600+3200+300')
+        sign_up_window.geometry(newGeometry='500x300+3200+300')
         sign_up_window.title('註冊新用戶')
 
-        # 做個類別？  來導入帳號密碼label、entry
+        # 帳號密碼Label
+        id_label = tkinter.Label(sign_up_window, text='User ID:')
+        id_label.place(relx=0.1, rely=0.1, anchor='nw')
+
+        password_label = tkinter.Label(sign_up_window, text='Password:')
+        password_label.place(relx=0.1, rely=0.25, anchor='nw')
+
+        conf_password_label = tkinter.Label(sign_up_window, text='Confirm\nPassword:')
+        conf_password_label.place(relx=0.1, rely=0.4, anchor='nw')
+
+        # 帳號密碼Entry
+        var_new_id = tkinter.StringVar()  # 追蹤字串的變數
+        var_new_id.set('YOURNAME@gmail.com')  # 預設文字，帳號常會提供預設形式
+        id_entry = tkinter.Entry(sign_up_window, textvariable=var_new_id, show=None, width=30)
+        id_entry.place(relx=0.3, rely=0.1, anchor='nw')
+        
+        var_new_password = tkinter.StringVar()
+        password_entry = tkinter.Entry(sign_up_window, textvariable=var_new_password, show='*', width=30)
+        password_entry.place(relx=0.3, rely=0.25, anchor='nw')
+
+        var_conf_password = tkinter.StringVar()
+        password_entry = tkinter.Entry(sign_up_window, textvariable=var_conf_password, show='*', width=30)
+        password_entry.place(relx=0.3, rely=0.43, anchor='nw')
+
+        # 確認新增按鈕
+        add_bt = tkinter.Button(sign_up_window, text='Add member', command=add_member)
+        add_bt.place(relx=0.45, rely=0.6, anchor='e')
+
+        # 取消註冊按鈕
+        cancel_bt = tkinter.Button(sign_up_window, text='Cancel', command=cancel_sign_up)
+        cancel_bt.place(relx=0.5, rely=0.6, anchor='w')
+
 
 
     window = tkinter.Tk()
