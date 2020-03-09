@@ -18,20 +18,20 @@ def job():
 
 
 def main():
+    print('main函數開始...\n')
     # 建立新線程，透過參數 target 提供線程執行內容
     # 與 tkinter 的 button command 相同，只要輸入名稱即可
+    # 參數 name= 可以為線程命名
     td1 = threading.Thread(target=job, name='td1')
 
     # Thread() 只是建立線程，必須透過 start() 來啟用
     td1.start()
 
+    # 透過 join() 防止後方的程式碼沒有等待線程任務執行完畢
+    td1.join()
 
-    print('All Done.')
+    print('main函數結束。')
 
 
 if __name__ == "__main__":
     main()
-
-
-
-
