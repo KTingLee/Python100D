@@ -7,31 +7,28 @@
 # 透過 Lock() 便可以將變數鎖定在同一條線程，如此一來，
 # 線程在操作上鎖的變數時，該變數就不會被其他線程使用
 
-
-
-
 import threading
 import time
 import queue
 
-# A = 0
 
-def job1():
-    global A  # 要改寫全域變數 A
+def job1(A):
+    # global A  # 要改寫全域變數 A
     for i in range(10):
         A += 1
-        print('td1 ', A)
+        print(f'td1 {A} ')
 
 
-def job2():
-    global A  # 要改寫全域變數 A
+def job2(A):
+    # global A  # 要改寫全域變數 A
     for i in range(10):
         A += 10
-        print('td2 ', A)
+        print(f'td2 {A} ')
 
 def main():
-    td1 = threading.Thread(target=job1)
-    td2 = threading.Thread(target=job2)
+    A = 0
+    td1 = threading.Thread(target=job1, args=(A, ))
+    td2 = threading.Thread(target=job2, args=(A, ))
 
     td1.start()
     td2.start()
@@ -43,15 +40,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    A = 0
-    td1 = threading.Thread(target=job1)
-    td2 = threading.Thread(target=job2)
-
-    td1.start()
-    td2.start()
-
-    td1.join()
-    td2.join()
-
-    print('All done!')
+    # A = 0
+    main()
+    
