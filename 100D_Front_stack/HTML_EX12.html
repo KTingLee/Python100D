@@ -1,0 +1,28 @@
+<!-- HTML基本語法練習12 -->
+<!-- frame分割練習 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Frame 練習</title>
+</head>
+
+<frameset cols=15%,50%,*>  <!-- 第一行為15%，第二行50%，剩下的給第三行 -->
+     <!-- 設定第一行 -->
+　　 <frameset rows=30%,*>  <!-- 細分成兩列，第一列30%，剩下給第二列 -->
+　　　　 <frame src="https://web.ncku.edu.tw/index.php" >  
+　　　　 <frame src="http://terms.naer.edu.tw/" >
+　　 </frameset>
+
+     <!-- 設定第二行，第二行沒有細分 -->
+　　 <frame src="https://dictionary.cambridge.org/zht/" name="cambridge_frame">
+
+     <!-- 設定第三行 -->
+　　 <frameset rows=70%,*>  <!-- 細分成兩列，第一列70%，剩下的給第二列 -->
+　　　　 <frame src="HTML_EX3.html" name="Ex3_frame">
+　　　　 <frame src="HTML_EX1.html" name="Ex1_frame">
+　　 </frameset>
+</frameset>
+
+
+</html>
