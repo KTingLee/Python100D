@@ -1,0 +1,47 @@
+// 定義變數
+$my_font: Helvetica, sans-serif;
+
+// 定義父樣式，練習繼承
+%box_size {
+    //padding 是內距/
+    padding: 2px;  
+    //margin 是外距/
+    margin-top: 12px;  
+}
+
+//給定 body 標籤的樣式
+body {
+    // 使用變數
+    font-family: $my_font;
+}
+
+
+/*給定 id=title 的樣式*/
+/*id 用 # 表示*/
+#title {
+    text-align: center;
+    font-size: 32px;
+    background-color: #c9dacd;
+    padding: 15px;
+}
+
+
+/*給定 class 的樣式*/
+/*class 用 . 表示*/
+.post {
+    background-color: #ECECEC;
+    // 使用繼承
+    @extend %box_size;  
+}
+
+.postTitle {
+    font-weight: bolder;
+    font-size: 30px;
+    @extend %box_size;
+}
+
+.comment {
+    text-align: left;
+    background: #cce8de;
+    @extend %box_size;
+}

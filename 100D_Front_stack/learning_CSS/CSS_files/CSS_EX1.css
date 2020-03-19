@@ -1,0 +1,39 @@
+/*給定 body 標籤的樣式*/
+body {
+    font-family: '微軟正黑體'
+}
+
+
+/*給定 id=title 的樣式*/
+/*id 用 # 表示*/
+#title {
+    text-align: center;
+    font-size: 32px;
+    background-color: #c9dacd;
+    padding: 15px;  /*padding 是內距*/
+}
+
+
+/*給定 class 的樣式*/
+/*class 用 . 表示*/
+.post {
+    background-color: #ECECEC;
+    padding: 2px;  /*padding 是內距*/
+    margin-top: 12px;  /*margin 是外距*/
+}
+
+.postTitle {
+    font-weight: bolder;
+    font-size: 30px;
+}
+
+.comment {
+    text-align: left;
+    background: #cce8de;
+    padding: 30px;
+    padding-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+

@@ -1,0 +1,30 @@
+@charset "UTF-8";
+.post, .postTitle, .comment {
+  padding: 2px;
+  margin-top: 12px; }
+
+body {
+  font-family: Helvetica, sans-serif; }
+
+/*給定 id=title 的樣式*/
+/*id 用 # 表示*/
+#title {
+  text-align: center;
+  font-size: 32px;
+  background-color: #c9dacd;
+  padding: 15px; }
+
+/*給定 class 的樣式*/
+/*class 用 . 表示*/
+.post {
+  background-color: #ECECEC; }
+
+.postTitle {
+  font-weight: bolder;
+  font-size: 30px; }
+
+.comment {
+  text-align: left;
+  background: #cce8de; }
+
+/*# sourceMappingURL=SASS_EX1_CSS.css.map */
