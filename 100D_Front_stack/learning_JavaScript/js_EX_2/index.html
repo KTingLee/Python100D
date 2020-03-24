@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+// 建立 Point 建構函數
+function Point(x, y){
+    // 設定物件屬性
+    this.x = x;
+    this.y = y;
+    
+    // 設定物件方法
+    this.getPosition = function(){
+        alert(this.x + ", " + this.y);
+    }
+};
+
+// 使用建構函數產生新的物件
+var pointA = new Point(3, 4);
+var pointB = new Point(5, 12);
+
+// 呼叫物件方法
+pointA.getPosition();
+pointB.getPosition();
+
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
