@@ -1,0 +1,19 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+    <!-- 
+        按下 submit 後，會將帶有 name 參數的元素以 post 的方式傳至後端
+        且會跳轉到 upload 頁面
+        在此額外新增 multipart/form-data 的編碼類型
+    -->
+    <form action="/upload" enctype="multipart/form-data" method="post">
+        <!-- 建立一個可以上傳檔案的按鈕，且可以上傳多個檔案 -->
+        <input type="file" name="upload" multiple="multiple" />
+        <input type="submit" value="Upload file" />
+    </form>
+</body>
+
+</html>

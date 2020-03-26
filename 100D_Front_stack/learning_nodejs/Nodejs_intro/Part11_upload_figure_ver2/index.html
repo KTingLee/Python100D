@@ -1,0 +1,23 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+    <!-- 
+        <form> 標籤可以產生表單，能輸入資料並傳遞給後端
+        參數 action 是處理表單資訊的頁面，method 指名使用 post 請求
+        表單資訊則是放在 <textarea> 中，且設定其參數 name，這個 name 參數等等會被用到
+        
+        而 <form> 標籤中包含著 <input>，其參數 type 有許多種，例如此處的 submit 表示要提交資料
+        而提交的資料則是尋找參數 name，例如此處提交的就會是 <textarea> 的資料
+
+        所以流程就是，使用 submit 後，會以 post 的方式傳遞 name=text 元素的內容並跳轉頁面至 /upload
+    -->
+    <form action="/upload" method="post">
+        <textarea name="text" rows="20" cols="60"></textarea>
+        <input type="submit" value="Submit text" />
+    </form>
+</body>
+
+</html>
