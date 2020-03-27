@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07_b.html</title>
+</head>
+<body>
+    <h1>我是 07.js 的配合範例 b.html</h1>
+    <h2>以下有一張圖片</h2>
+    <h3>這張圖引用路徑為 "./07_pic.jpg"，若要成功顯示圖片，則 localhost:3000/07_pic.jpg 要能夠看到圖片！</h3>
+    <img src="./07_pic.jpg" alt="">
+
+    <h3>如果看不到這張圖片，表示伺服器的路由清單中並沒有這張圖片</h3>
+    <h3>所以即使這張圖片真的存在於伺服器的硬碟中</h3>
+    <h3>但因為沒有路由，所以是無效的請求</h3>
+    <br>
+    <h3>修正方法與 07_a.html 中的 css.css 文件一樣</h3>
+    <h3>將圖片放到路由清單中，也就是讓伺服器可以把圖片輸出到瀏覽器中</h3>
+    <h3>若 localhost:3000/07_pic.jpg 可以出現圖片，就表示圖片已經位於路由清單中了</h3>
+    <h3>這樣 07_b.html 就可以引用成功囉！</h3>
+</body>
+</html>

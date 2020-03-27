@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07_a.html</title>
+    <link rel="stylesheet" href="./css.css"/>
+</head>
+<body>
+    <h1>我是 07.js 的配合範例 a.html</h1>
+    <h2>雖然你前往的頁面寫 haha.html 但實際上沒有 haha.html</h2>
+    <h2>而 haha.html 事實上是引入了 a.html 的內容</h2>
+    <h3>也就是說，Node.js 的網址可以做出偽裝的功能</h3>
+    <hr>
+    <h2>實際上，還有一個問題，就是</h2>
+    <h2>a.html 其實有引用一個樣式表(css)，可以用開發者模式(f12)來查看</h2>
+    <h2>進入 Network 中，可以看到 css.css 在其中(如果沒看到請重新整理)</h2>
+    <h2>這時如果點進去會發現頁面跳轉成"頁面不存在"</h2>
+    <h3>因為 a.html 要引用 css.css 時，其實是存取 localhost:3000/css.css</h3>
+    <h3>但 css.css 並沒有在路由清單中，也因此這個請求是無效的</h3>
+    <hr>
+    <h2>解決辦法，將以下程式碼貼入至 07.js 的 req.url == "/haha.html" 的下一段：</h2>
+    <tt>
+        else if(req.url === "/public/css.css"){
+        fs.readFile("./public/07_a.html", function(err, data){
+            res.end(data);
+        });
+    </tt>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*
-2020/03/24  建立 Apache
+建立 Apache
 PHP建立的網頁。其網址都對應一個真實資料
 例如網址是 dir1/figure1.jpg 那網頁資料夾必包含該檔案
 
@@ -9,6 +9,7 @@ dir1/figure1.mp3
 以 Apache 來看這應該是一個音樂檔，但這只是 Node.js 自定義的路由，真正指向的內容還是可以為 figure.jpg
 
 這個程式碼主要在介紹，當用戶輸入 local:3000/dir1/figure1.jpg 時，會去尋找 figure1.jpg 
+(也可以找別的，例如 local:3000/dir1/figure1.mp3 不一定是尋找 figure1.mp3 也可以尋找 figure1.jpg)
 並將其呈現出來
 
 也就是依照使用者的請求建立路由，而不是先自定義路由；而路由成立與否則必須依照伺服端是否有對應資料

@@ -41,7 +41,7 @@ function start(route, handle) {
     // 監聽 end 事件，當接收完所有 chumk 時才觸發
     request.addListener("end", function() {
       console.log('資料總共分成:', count, '次接收')
-      route(handle, pathname, response, postData);
+      route(handle, pathname, response);
     });
 
   }
