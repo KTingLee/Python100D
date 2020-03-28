@@ -6,6 +6,7 @@
 
 例如使用者的請求為 localhost:3000/news 表示其請求的路由為 news，
 所以我們有寫一段 if(req.url === "news"){ ... } 來做為該請求的回應
+但當有許多路由的時候，不就要寫一大串的 if 判斷？
 
 而該範例在說明，當我們以這種方式建立路由的時候，假設
 localhost:3000/haha.html 引入 ./public/07_a.html
@@ -22,6 +23,9 @@ var http = require("http");
 var fs = require("fs");
 
 var server = http.createServer(function(req, res) {
+    console.log('顯示請求路由' + req.url);
+
+    // 07_a.html 相關路由
     if (req.url === "/haha.html"){
         fs.readFile("./public/07_a.html", function(err, data){
             res.setHeader('Content-Type', 'text/html;charset=UTF-8');
@@ -31,12 +35,52 @@ var server = http.createServer(function(req, res) {
         fs.readFile("./public/css.css", function(err, data){
             res.end(data);
         });
+
+    // 07_b.html 相關路由(07_b的圖片沒有放路由，所以無法顯示)
     }else if (req.url === "/GG.html"){
         fs.readFile("./public/07_b.html", function(err, data){
             res.setHeader('Content-Type', 'text/html;charset=UTF-8');
             res.end(data);
         });
+
+    // 07_c.html 的相關路由
+    }else if (req.url === "/GG2.html"){
+        fs.readFile("./public/07_c.html", function(err, data){
+            res.setHeader('Content-Type', 'text/html;charset=UTF-8');
+            res.end(data);
+        });
+    }else if (req.url === "/07_subdir/07_picb.jpg"){
+        fs.readFile("./public/07_subdir/07_picb.jpg", function(err, data){
+            res.end(data);
+        });
+
+    // 07_d.html 的相關路由，第一種
+    }else if (req.url === "/07d.html"){
+        fs.readFile("./public/07_subdir/07_d.html", function(err, data){
+            res.setHeader('Content-Type', 'text/html;charset=UTF-8');
+            res.end(data);
+        });
+    }else if (req.url === "/07_picb.jpg"){
+        fs.readFile("./public/07_subdir/07_picb.jpg", function(err, data){
+            res.end(data);
+        });
+    }else if (req.url === "/07_pic.jpg"){
+        fs.readFile("./public/07_pic.jpg", function(err, data){
+            res.end(data);
+        });
+    // 07_d.html 的第二種路由
+    }else if (req.url === "/fakedir/07dd.html"){
+        fs.readFile("./public/07_subdir/07_d.html", function(err, data){
+            res.setHeader('Content-Type', 'text/html;charset=UTF-8');
+            res.end(data);
+        });
+    }else if (req.url === "/fakedir/07_picb.jpg"){
+        fs.readFile("./public/07_subdir/07_picb.jpg", function(err, data){
+            res.end(data);
+        });
     }
+
+
     else{
         res.setHeader('Content-Type', 'text/html;charset=UTF-8');
         res.end("頁面不存在")

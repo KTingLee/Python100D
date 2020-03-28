@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07_b.html</title>
+</head>
+<body>
+    <h1>我是 07.js 的配合範例 d.html</h1>
+    <h2>以下引用兩張圖片</h2>
+    <h2>第一張，相同資料夾的圖片，html 中引用路徑為 ./07_picb.jpg</h2>
+    
+    <!-- 引用的路徑是以 html 本身做出發 -->
+    <img src="./07_picb.jpg" alt="">
+
+    <h2>第二張，圖片位於上一層資料夾，html 中引用路徑為 ../07_pic.jpg</h2>
+    <img src="../07_pic.jpg" alt="">
+
+    <h2><font color='red'>若連線至 d.html 的路由為 localhost:3000/07d.html </font></h2>
+    <p>則必須添加圖片的路由，第一張為 localhost:3000/07_picb.jpg</p>
+    <p>而第二張，似乎是 localhost:3000/../07_pic.jpg 但因為 localhost:3000 已經是最底層，所以 ../ 沒有用</p>
+    <p>因此第二張圖片的路由為 localhost:3000/07_pic.jpg</p>
+
+    <h2><font color='blue'>若連線至 d.html 的路由為 localhost:3000/fakedir/07dd.html </font></h2>
+    <p>則必須添加圖片的路由，第一張為 localhost:3000/fakedir/07_picb.jpg</p>
+    <p>而第二張，似乎是 localhost:3000/fakedir/../07_pic.jpg 所以變成 localhost:3000/07_pic.jpg</p>
+
+</body>
+</html>

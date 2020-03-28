@@ -27,13 +27,13 @@ var server = http.createServer(function(req, res) {
     if(req.url === "/"){
         res.end("首頁");
 
-    }else if(req.url === "music.html"){  // 其實沒有 music.html 文件
+    }else if(req.url === "/music.html"){  // 其實沒有 music.html 文件
         res.end("音樂頻道，其實我沒有 .html 文件");
 
-    }else if(req.url === "news"){
+    }else if(req.url === "/news"){
         res.end("新聞頻道");
 
-    }else if(req.url === "picture.mp3"){  // 其實 picture.mp3 這個路由不是音樂而是網頁
+    }else if(req.url === "/picture.mp3"){  // 其實 picture.mp3 這個路由不是音樂而是網頁
         res.end("圖片頻道，不要被網址的 .mp3 給騙了");
 
     }else if(/^\/student\/[\d]{6}$/.test(req.url)){  // 以正規表達式匹配使用者請求

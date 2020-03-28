@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07_b.html</title>
+</head>
+<body>
+    <h1>我是 07.js 的配合範例 c.html</h1>
+    <h2>以下有一張圖片</h2>
+    <h3>這張圖引用路徑為 "./07_subdir/07_picb.jpg"，上一個範例是"./07_pic.jpg"</h3>
+    <h3>若要成功顯示圖片，則 localhost:3000/07_subdir/07_picb.jpg 要能夠看到圖片！</h3>
+    
+    <!-- 引用的路徑是以 html 本身做出發 -->
+    <img src="./07_subdir/07_picb.jpg" alt="">
+
+    <h2>整理一下</h2>
+    <div>
+        07_b.html 引用的圖片路徑為 ./07_pic.jpg，連上 07_b.html 的路由為 localhost:3000/GG.html，所以
+        圖片的路由為 localhost:3000/07_pic.jpg
+    </div>
+    <br>
+    <div>
+        07_c.html 引用的圖片路徑為 ./07_subdir/07_picb.jpg，連上 07_c.html 的路由為 localhost:3000/GG2.html，所以
+        圖片的路由為 localhost:3000/07_subdir/07_picb.jpg
+    </div>
+</body>
+</html>
