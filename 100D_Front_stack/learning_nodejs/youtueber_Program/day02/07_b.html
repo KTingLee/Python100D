@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07的第二個頁面</title>
+</head>
+<body>
+    <h2>我不在靜態資料夾中，但我一樣可以被 sendFile</h2>
+    <h2>下面這張圖是位於靜態資料夾中的</h2>
+    <h2>但引用路徑為 src="./public/07_a.jpg" 所以路由為 localhost:3000/public/07_a.jpg</h2>
+    <h2>這個路由不在路由清單中，也不在靜態資源產生的路由中</h2>
+    <h3>靜態資源產生的路由是 localhost:3000/07_a.jpg</h3>
+    <h3>所以用 express 的時候，並不是靜態資源資料夾中的檔案都可以直接被引用</h3>
+    <h3>還是要根據 html 引用的路徑為主</h3>
+    <h3><font color='red'>但通常來說，都是以"相對靜態資料夾的路徑"作為引用路徑</font></h3>
+    <h3>例如靜態資料夾是 public，我這邊的引用就由 src="./public/07_a.jpg" 改成 src="07_a.jpg"</h3>
+    <img src="./public/07_a.jpg" alt="">
+
+</body>
+</html>

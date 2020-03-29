@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>default</title>
+</head>
+<body>
+    <p>
+        <!-- <input> 標籤若 type=text 則為輸入框 -->
+        姓名：  <input type="text" name="name" />
+    </p>
+    <p>
+        年齡：  <input type="text" name="age" />
+                <label><input type="radio" name="sex" value="男"/>男</label>
+                <label><input type="radio" name="sex" value="女"/>女</label>
+    </p>
+    <p>
+        <input type="button" value="點我發送POST請求" id="btn2"/>
+    </p>
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <script type="text/javascript">
+        // 監聽 id=btn2，當觸發 click 事件時執行匿名函數
+        $("#btn2").click(function(){
+            // 讀取表單
+            var name = $("input[name=name]").val();
+            var age = $("input[name=age]").val();
+            var sex = $("input[name=sex]:checked").val();
+
+            // 向伺服器發送POST請求，POST的發送方法是透過http表單傳送
+            $.post("/addStudent", {
+                name : name,
+                age  : age,
+                sex  : sex
+            }, 
+            // 發送完請求後等待伺服器回應
+            function(response){
+                if (response == "Error when writing data."){
+                    alert("寫入文件失敗..")
+                }else {
+                    alert("寫入文件成功！")
+                }
+            });
+        });
+    </script>
+</body>
+</html>

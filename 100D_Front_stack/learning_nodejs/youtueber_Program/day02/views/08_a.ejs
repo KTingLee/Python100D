@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>見識見識ejs</title>
+</head>
+<body>
+    <h1>ejs 就是一個模板，例如我每天都要上傳這個頁面，</h1>
+
+    <h2>這是第 ( <%= use_times %> ) 次使用這個模板</h2>
+    <p>括號中的數字是模板使用的次數，我每天都要上傳的話，總不會每次都手動去修改這個數字</p>
+    <p>利用 ejs 就可以透過伺服器輸入(程式輸入)，這個時候就不會是 html 自己的語法</p>
+    <p>此處用的就是 ejs 的語法</p>
+
+    <h2>又或者像下面這個選擇項目也是用 ejs 做出來的</h2>
+    <p>但在瀏覽器使用開發者模式也完全看不出來！</p>
+    <p>只能看出 ejs 的輸出結果，也就是只會看出這是 html 的內容(但這卻是由 ejs 做出來的)</p>
+    <select name="" id="">
+        <% 
+            for(var i=1949; i<=2017; i++){
+        %>
+            <option value="<%= i %>"><%= i %></option>
+        <% 
+            }
+        %>
+    </select>
+</body>
+</html>

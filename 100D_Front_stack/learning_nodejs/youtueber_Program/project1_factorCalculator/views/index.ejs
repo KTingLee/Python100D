@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>因數計算器首頁</title>
+    <!-- 引入 bootstrap 的 CSS 樣式表，引入前要確定樣式表有在靜態資料夾中 -->
+    <!-- 且路徑是相對於靜態資料夾 -->
+    <!-- 引入成功後就可以去 bootstrap 中找自己喜歡的樣式來配囉！ -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <!-- 挑一個喜歡的樣式放進來 -->
+    <!-- 標題列 -->
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand">
+        因數計算器
+      </a>
+    </nav>
+
+    <!-- 輸入框 -->
+    <div class="input-group mb-3">
+      <input type="number" class="form-control" placeholder="請輸入 1 ~ 10000000 的數字：" id="userNumber">
+      <div class="input-group-append">
+        
+        <!-- 設定按鈕，當按鈕按下後會跳轉到輸入的數字網址 -->
+        <!-- 例如輸入 1234，按下按鈕後就會跳轉至 localhost:3000/1234 -->
+        <button class="btn btn-outline-secondary" type="button" id="btn1">查詢因數</button>
+      </div>
+    </div>
+
+    <!-- 為了完成可以跳轉的工作，所以要透過 js 完成，這邊就使用 js 的函式庫 jQuery -->
+    <!-- 一樣引入位於靜態資料夾中的 jQuery 文件，路徑一樣相對於靜態資料夾 -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    
+    <!-- 使用 jQuery 語法，製作出跳轉功能 -->
+    <script>
+        // 當 id=btn1 的元素被點擊的時候，執行匿名函數
+        $("#btn1").click(function(){
+            // 匿名函數會先獲得 id=userNumber 的值
+            var number = $("#userNumber").val();
+
+            if (number > 10000000){
+                alert('數字太大了')
+                return;
+            };
+            // 並且讓頁面跳轉
+            window.location = "/" + number
+        })
+    </script>
+
+</body>
+</html>

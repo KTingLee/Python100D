@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>因數查詢結果</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <!-- 標題列 -->
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand">
+        因數計算器
+      </a>
+    </nav>
+
+    <!-- number 是由 controllers.js 的 showResults 函數傳來的 -->
+    <div>以下為 <%= number %> 的因數(計算消耗 <%= useTime %> 毫秒)：</div>
+
+    <ul>
+        <!-- resultsArr 也是由 controllers.js 的 showResults 函數傳來 -->
+        <%
+            for (var i = 0; i < resultsArr.length; i++){
+        %>
+
+            <li><%= resultsArr[i] %></li>
+
+        <%
+            }
+        %>
+    </ul>
+
+</body>
+</html>
