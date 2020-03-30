@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>傳統方式</title>
+</head>
+<body>
+    <span>
+        傳統方式需要利用表單 &lt;form&gt; 標籤，並且 &lt;input&gt; 標籤中，type 屬性必須為 "submit"，
+        藉此將前端的內容傳至後端。
+    </span>
+    <hr>
+
+    <!-- 傳統 GET 請求傳遞資料 -->
+    <!-- form 標籤中，action 填入"要跳轉的頁面"，method 則是"請求的方式"" -->
+    <!-- 若跳轉頁面沒有在路由清單中，那可能會顯示 304 not Modified -->
+    <div>
+        <form action="/GetResult" method="get" enctype="multipart/form-data">
+            <p>
+                請輸入姓名： <input type="text" name="userName_get"/>
+            </p>
+            <p>
+                請輸入年齡： <input type="text" name="Age_get"/>
+            </p>
+            <p>
+                請選擇性別：
+                <input type="radio" name="Sex_get" value="男"/>男
+                <input type="radio" name="Sex_get" value="女"/>女
+            </p>
+            
+            <input type="submit" value="使用GET請求提交表單">
+        </form>
+    </div>
+
+    <hr>
+    
+    <!-- 傳統 POST 請求傳遞資料 -->
+    <!-- 與上面相同，只需要把 form 標籤的 method 改成 post 以及 action 換一個路由 -->
+    <div>
+        <form action="/PostResult" method="post" enctype="multipart/form-data">
+            <p>
+                請輸入姓名： <input type="text" name="userName_post"/>
+            </p>
+            <p>
+                請輸入年齡： <input type="text" name="Age_post"/>
+            </p>
+            <p>
+                請選擇性別：
+                <input type="radio" name="Sex_post" value="男"/>男
+                <input type="radio" name="Sex_post" value="女"/>女
+            </p>
+            
+            <input type="submit" value="使用POST請求提交表單">
+        </form>
+    </div>
+
+</body>
+</html>

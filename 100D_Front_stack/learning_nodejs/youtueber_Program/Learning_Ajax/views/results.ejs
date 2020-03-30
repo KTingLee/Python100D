@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>傳統結果頁面</title>
+</head>
+<body>
+    <span>
+        <font size=2>
+            傳統方式按完提交後，會跳轉頁面。<br>
+            在傳統方式中，不須使用到 js 就可以傳遞請求，主要用到的就是 form 標籤與 input 標籤<br>
+            在 form 標籤中，屬性 action 是指定跳轉的路由，而 method 則是指定請求方法<br>
+            在 input 標籤中，屬性 type 會設為 submit，會將 form 標籤中"包含name屬性的元素"傳給後端<br>
+        </font>
+    </span>
+
+    <p>
+        你的姓名是： <%= userName %>
+    </p>
+    <p>
+        你的年齡是： <%= Age %>
+    </p>
+    <p>
+        你的性別是： <%= Sex %>
+    </p>
+    
+</body>
+</html>

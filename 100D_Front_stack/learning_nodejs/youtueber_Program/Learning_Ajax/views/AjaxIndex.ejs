@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax方式</title>
+</head>
+<body>
+    <span>
+        Ajax方式<font color="red">不需要</font>使用表單 &lt;form&gt; 標籤，而 &lt;input&gt; 標籤中，type 屬性設為 "button" 即可，
+        Ajax 主要是透過 JavaScript 語法來傳遞請求。
+        所以重要的是 &lt;input type="button&gt; 必須設定 id！這樣才方便監聽。
+        <br>
+        Ajax 的好處是不需要跳轉頁面(要跳轉也行)，也就是說 Ajax 在傳遞資料時，使用者仍然可以繼續瀏覽網頁，
+        達到異步處理請求的效果。
+    </span>
+    <hr>
+
+    <!-- Ajax 處理請求 -->
+    <!-- Ajax 的 Post 與 Get 沒什麼差別，只在於 jQuery 的部分是要用 get 還是 post -->
+    <div>
+        <!-- 不必 <form> 標籤 -->
+        <!-- <form action="/PostResult" method="post" enctype="multipart/form-data"> -->
+            <p>
+                請輸入姓名： <input type="text" name="userName_Ajax"/>
+            </p>
+            <p>
+                請輸入年齡： <input type="text" name="Age_Ajax"/>
+            </p>
+            <p>
+                請選擇性別：
+                <input type="radio" name="Sex_Ajax" value="男"/>男
+                <input type="radio" name="Sex_Ajax" value="女"/>女
+            </p>
+            
+            <!-- 按鈕部分必須提供 id -->
+            <input type="button" value="使用Ajax提交表單" id="btn1">
+        <!-- </form> -->
+    </div>
+
+    <!-- 寫入 JavaScript 語法，進行 Ajax 傳遞請求，這邊直接引用 jQuery 函式庫 -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+    <script>
+        // 監聽按鈕動作，當按鈕被點即時執行匿名函數
+        $("#btn1").click(function(){
+            // 準備要傳給後端的數據
+            var userName = $("input[name=userName_Ajax]").val();
+            var Age = $("input[name=Age_Ajax]").val();
+            var Sex = $("input[name=Sex_Ajax]:checked").val();
+
+            $.get("/AjaxGet", {
+                userName : userName,
+                Age : Age,
+                Sex : Sex
+            }, function(data){
+                if (data == "OK"){
+                    alert('後端透過 Ajax 接收到資訊囉')
+                }
+            });
+
+        });
+    </script>
+
+
+
+
+</body>
+</html>
