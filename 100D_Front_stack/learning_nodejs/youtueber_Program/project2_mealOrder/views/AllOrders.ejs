@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>所有訂單</title>
+    <!-- 路徑相對於靜態資料夾 -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+
+    <style type="text/css">
+        .box{
+            margin:15px auto;
+            width: 85%;
+        }
+
+        .btnBox{
+            position: relative;
+            top: -7px;
+            left: 24.6%;
+            width: 150px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 標題 -->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+        發大財所有訂單
+        </a>
+    </nav>
+
+    <ul>
+        <%
+            for (var i = 0; i < ordersArr.length; i++){
+        %>
+            <!-- ejs 連屬性都可以用 ejs 語法 -->
+            <li><a href="/allOrders/<%= ordersArr[i] %>"><%= ordersArr[i] %></a></li>
+
+        <%
+            }
+        %>
+    </ul>
+
+</body>
+</html>

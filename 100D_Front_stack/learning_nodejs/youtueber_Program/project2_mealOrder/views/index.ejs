@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>訂餐系統首頁</title>
+    <!-- 路徑相對於靜態資料夾 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+
+    <style type="text/css">
+        .box{
+            margin:15px auto;
+            width: 85%;
+        }
+
+        .btnBox{
+            position: relative;
+            top: -7px;
+            left: 24.6%;
+            width: 150px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 標題 -->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="/index_pic.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+        發大財訂餐系統
+        </a>
+        <span><a href="/superPage">管理員頁面</a></span>
+    </nav>
+
+    <!-- 訂餐輸入框 -->
+    <div class="box">
+        <p>請輸入電話：
+            <input type="text" placeholder="手機！" name="phoneNum">
+        </p>
+
+        <p>請輸入餐點：
+            <input type="text" placeholder="假殺虫" name="userMeal">
+        </p>
+        <!-- 按鈕 -->
+        <div class="btnBox">
+            <input type="button" value="送出" id='btn1'>
+            <input type="reset" value="重置" id='btn2'>
+        </div>
+    </div>
+
+    <!-- 使用 Ajax 點餐(以下用 jQuery 函式庫) -->
+    <script>
+        // 當 id=btn1 的元素被點擊的時候，執行匿名函數
+        $("#btn1").click(function(){
+            // 匿名函數會先獲得 id=userNumber 的值
+            var phoneNumber = $("input[name=phoneNum]").val();
+            var userMeal = $("input[name=userMeal]").val();
+
+            // 判斷有沒有填好資料
+            if (phoneNumber == '' || userMeal == ''){
+                alert('你是不是資料沒填好阿！')
+                return;
+            }
+
+            // 透過 post 方式傳遞，第一個參數是要傳遞的路由
+            // 當後端處理完會 send 一個 data 過來，匿名函數便接收之
+            $.post('/newOrder',{
+                phoneNumber : phoneNumber,
+                userMeal : userMeal
+            }, function(data){
+                console.log(data)
+                if(data == "200"){
+                    alert('你的訂單已接收！')
+                    return;
+                }
+            })
+        })
+
+        // 當 id=btn2 的元素被點擊的時候，執行匿名函數
+        $("#btn2").click(function(){
+            // 重置值
+            $("input[name=phoneNum]").val("")
+            $("input[name=userMeal]").val("")
+        })
+    </script>
+
+</body>
+</html>

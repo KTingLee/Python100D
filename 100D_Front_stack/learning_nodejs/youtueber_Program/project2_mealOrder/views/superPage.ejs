@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理者頁面</title>
+    <!-- 路徑相對於靜態資料夾 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+
+    <style type="text/css">
+        .box{
+            margin:15px auto;
+            width: 85%;
+        }
+
+        .btnBox{
+            position: relative;
+            top: -7px;
+            left: 24.6%;
+            width: 150px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 標題 -->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="/index_pic.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+        發大財訂餐系統
+        </a>
+    </nav>
+
+    <!-- 帳密輸入框，密碼是用 input="password" -->
+    <div class="box">
+        <p>請輸入帳號：
+            <input type="text" name="rootId">
+        </p>
+
+        <p>請輸入密碼：
+            <input type="password" name="rootPwd">
+        </p>
+        <!-- 按鈕 -->
+        <div class="btnBox">
+            <input type="button" value="送出" id='btn1'>
+            <input type="reset" value="重置" id='btn2'>
+        </div>
+    </div>
+
+    <!-- 使用 Ajax 點餐(以下用 jQuery 函式庫) -->
+    <script>
+        // 當 id=btn1 的元素被點擊的時候，執行匿名函數
+        $("#btn1").click(function(){
+            // 匿名函數會先獲得 id=userNumber 的值
+            var rootId = $("input[name=rootId]").val();
+            var rootPwd = $("input[name=rootPwd]").val();
+
+            // 判斷是否登入成功
+            if (rootId == "root" && rootPwd == "1234"){
+                alert("登入成功！")
+                window.location = '/allOrders'
+            }
+            else{
+                alert("登入失敗，請重新輸入！")
+                $("input[name=rootId]").val("")
+                $("input[name=rootPwd]").val("")
+            }
+
+        })
+
+        // 當 id=btn2 的元素被點擊的時候，執行匿名函數
+        $("#btn2").click(function(){
+            // 重置值
+            $("input[name=rootId]").val("")
+            $("input[name=rootPwd]").val("")
+        })
+    </script>
+
+</body>
+</html>
