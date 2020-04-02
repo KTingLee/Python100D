@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加學生頁面</title>
+    <style type="text/css">
+        section{
+            width: 700px;
+            margin: 0 auto;
+        }
+        span{
+            font-size: 11px;
+        }
+        
+    </style>    
+</head>
+<body>
+
+    <section>
+        <h1>增加學生系統</h1>
+        <p>增加學生是透過 Ajax 提交 post 表單，此處用的 post 路由亦為 /addStudent</p>
+        <p>雖然這個路由已經有 get 請求了。  表示同一個路由其實可以給不同請求一起使用(看 app.js 中的路由清單)</p>        
+        <hr/>
+
+        <h2>請填入學生資料：</h2>
+        <p>
+            姓名：
+            <input type="text" name="Name">
+        </p>
+
+        <p>
+            年齡：
+            <input type="text" name="Age">
+            <!-- 利用正規表達式規定只能輸入數字 -->
+            <!-- <input onkeyup="value=value.replace(/[^\d]/g,'')"> -->
+        </p>
+
+        <p>
+            性別：
+            <input type="radio" name="Sex" value="男">男
+            <input type="radio" name="Sex" value="女">女
+        </p>
+
+        <p>
+            地址：
+            <input type="text" name="Provice">
+        </p>
+
+        <input type="button" value="送出" id="btn">                        
+    </section>
+
+    <!-- 透過 Ajax 以 post 請求提交表單 -->
+    <script type="text/javascript" src="/jquery.min.js"></script>
+    <script type="text/javascript">
+        // 監聽 id=btn 的按鈕，被按下時執行匿名函數
+        $("#btn").click(function(){
+            // 發出 post 請求，提供 post 請求路由，以及內容。
+            // 傳送完後，等待後端回覆並執行剩下的函數
+            $.post("/addStudent", {
+                "Name"    : $("input[name=Name]").val(),
+                "Age"     : $("input[name=Age]").val(),
+                "Sex"     : $("input[name=Sex]:checked").val(),
+                "Provice" : $("input[name=Provice]").val()
+            },function(info){
+                if(info == -1){
+                    alert("添加失敗...")
+                }else{
+                    alert("添加成功！")
+                }
+
+
+            })
+        })
+
+    </script>
+</body>
+</html>

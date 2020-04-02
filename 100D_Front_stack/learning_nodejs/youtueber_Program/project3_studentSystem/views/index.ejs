@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>學生管理系統首頁</title>
+
+    <style type="text/css">
+        table{
+            width: 700px;
+        }
+        table,tr,td, th{
+            border: 1px solid #eee;
+            border-collapse: collapse;
+
+        }
+        section{
+            width: 700px;
+            margin: 0 auto;
+        }
+        tr:first-child{
+            background-color: skyblue;
+        }
+        span{
+            font-size: 11px;
+        }
+        
+    </style>
+
+</head>
+<body>
+    <section>
+        <h1>學生管理系統</h1>
+        <p>
+           <!-- 跳轉至 /addStudent 路由，顯示增加學生頁面 -->
+           <a href="/addStudent">增加學生</a> 
+        </p>
+
+
+        <p><b>透過後端讀取學生資料，再透過 ejs 傳給前端</b></p>
+        <span>
+            這個方法，用開發者模式看網頁原始碼，會看到所有學生資料，方便爬蟲。這裡的學生資料是透過後端讀取資料庫後，將資料渲染在 ejs 模板。
+            <br>
+            所以前端會直接看到 ejs 渲染後的結果(資料在後端處理完後傳給前端)。
+        </span>
+        <table>
+            <!-- 第一列，標題 th -->
+            <tr>
+                <th>姓名</th>
+                <th>年齡</th>
+                <th>性別</th>
+                <th>區域</th>
+            </tr>
+
+            <% 
+                for(var i=0; i < allStudent.length; i++){
+            %>
+            <!-- 第二列開始，資料 td -->
+            <tr>
+                <td><%= allStudent[i].Name %></td>
+                <td><%= allStudent[i].Age %></td>
+                <td><%= allStudent[i].Sex %></td>
+                <td><%= allStudent[i].Provice %></td>
+            </tr>
+            <%
+                }
+            %>
+
+        </table>
+    </section>
+
+    <section>
+        <p><b>透過 Ajax 讀取學生資料，所以資料的獲取是在前端執行的</b></p>
+        <span>
+            透過 Ajax 讀取數據，必須先有接口(例如有一個路由用來儲存數據)
+            <br>
+            透過這個方法，查看網頁原始碼是無法看到數據的！因為這是利用前端(Ajax是前端執行)，至接口中拿數據做渲染的～
+        </span>
+        <table id="AjaxMethod">
+            <!-- 第一列 -->
+            <tr>
+                <th>姓名</th>
+                <th>年齡</th>
+                <th>性別</th>
+                <th>區域</th>
+            </tr>
+
+
+        </table>
+    </section>
+
+    <!-- 使用 Ajax，這邊用 jQuery 函式庫 -->
+    <script type="text/javascript" src="/jquery.min.js"></script>
+
+    <!-- 這邊 ejs 模板搭配 underscore 語法，所以引入 underscore -->
+    <script type="text/javascript" src="/my_underscore-min.js"></script>
+    <!-- underscore 使用時要先定義模板 -->
+    <!-- 因為這邊要放資料了，所以是 tr-td -->
+    <script type="text/template" id="myTemplate">
+        <tr>
+            <td> @@= templateName @@ </td>
+            <td> @@= templateAge @@ </td>
+            <td> @@= templateSex @@ </td>
+            <td> @@= templateProvice @@ </td>
+        </tr>
+    </script>
+
+    <script type="text/javascript">
+        // 先將剛剛定義的模板轉成 html 格式，並將其轉成模板函數(就可以把參數傳入了)
+        var templateHTML = $("#myTemplate").html();
+        var compilerFunction = _.template(templateHTML);
+
+        // 透過 Ajax 到接口讀資料。GET請求路由，請求成功後執行匿名函數(會獲得資料，存放在 data)
+        $.get('/allStudentData', function(data){
+            // 遍歷 data.allStudent 。 之所以是 allStudent 是因為我們在 Ajax_allStudent 函數中定義的
+            _.each(data.allStudent, function(student){
+                // 把資料丟入模板函數，轉換成模板要接收的物件
+                var str = compilerFunction({
+                    "templateName" : student.Name,
+                    "templateAge" : student.Age,
+                    "templateSex" : student.Sex,
+                    "templateProvice" : student.Provice
+                })
+
+                // 模板接收物件，轉換成前端內容
+                $(str).appendTo("#AjaxMethod")
+            })
+        })
+
+
+
+    </script>
+
+</body>
+</html>
