@@ -53,13 +53,26 @@ var checkStudent_id = function(req, res){
 }
 
 
-// 查詢所有學生資料，並傳至前端 Ajax 要使用的接口
-var getAllstudents = function(req, res){
-    // 查詢 students 集合中的所有資料
-    Student.find({}, function(err, results){
-        // 包成 json，並放在其屬性 results 中。 再傳至前端 Ajax 要使用的接口
-        // 因為 mongoose 查詢時，回傳的就是 json，所以不用再做格式轉換
-        res.json({"results" : results})
+// 查詢學生資料，並傳至前端 Ajax 要使用的接口
+// 因為要做分頁條，所以會先判斷讀取的頁數，以提供相對應的學生資料
+var getStudents = function(req, res){
+    // 需提供的頁碼，因為前端提供的分頁條起始為第 1 頁，但 js 起始索引為 0，故要減 1，這樣才不會錯誤地略過資料
+    var thisPage = url.parse(req.url, true).query.page -1 || 0;
+
+    // 每頁要讀取的資料數
+    var pageSize = 2;
+
+    // 獲得所有資料數量
+    Student.count({}, function(err, count){
+        // 查詢 students 集合中的所有資料，並限制輸出數量(limit)以及略過數量(skip)
+        Student.find({}).limit(pageSize).skip(pageSize * thisPage).exec(function(err, results){
+            // 包成 json，並放在其屬性 results 中。 再傳至前端 Ajax 要使用的接口
+            // 因為 mongoose 查詢時，回傳的就是 json，所以不用再做格式轉換
+            res.json({
+                "pageAmount" : Math.ceil(count/pageSize),
+                "results" : results
+            })
+        })
     })
 }
 
@@ -134,7 +147,7 @@ exports.showIndex = showIndex;
 exports.showAdd = showAdd;
 exports.addStudentData = addStudentData;
 exports.checkStudent_id = checkStudent_id;
-exports.getAllstudents = getAllstudents;
+exports.getStudents = getStudents;
 exports.showStudent = showStudent;
 exports.updateStudent = updateStudent;
 exports.deleteStudent = deleteStudent;

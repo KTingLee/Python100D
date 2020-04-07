@@ -19,7 +19,7 @@ app.get("/",       mainCtrl.showIndex);       // 首頁
 app.get("/add",    mainCtrl.showAdd);         // 增加學生頁面
 app.post("/add",   mainCtrl.addStudentData);  // 增加學生資料置資料庫
 app.propfind("/student/:sid", mainCtrl.checkStudent_id);  // 檢查學生學號是否已存在，利用 propfind (只不過是另一種請求)
-app.get("/student",         mainCtrl.getAllstudents);  // 獲得所有學生資料
+app.get("/student",         mainCtrl.getStudents);  // 獲得學生資料
 app.get("/student/:sid",    mainCtrl.showStudent);     // 修改學生頁面
 app.post("/student/:sid",   mainCtrl.updateStudent);   // 更改學生動作
 app.delete("/student/:sid", mainCtrl.deleteStudent);   // 刪除學生動作
