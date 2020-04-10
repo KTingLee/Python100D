@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:image/ico;base64,aWNv">
+    <title>城市名稱 - 搭配 04.js 範例</title>
+</head>
+<body>
+    <h1>歡迎來到 localhost:3000/<%= cityName %> </h1>
+    <p>當前端請求這個網頁時，伺服器會先判斷使用者是否持有名為 cityHistory 的 cookie，這個 cookie 中紀錄了使用者前往哪些城市(可以重複)</p>
+    <p>並且當伺服器回應請求時，會將本次的紀錄插入至 cookie 中，並回傳給使用者，而使用者下次再進入此頁面時，就會帶著更新後的 cookie</p>
+
+    <p>使用者可以開啟 開發者模式，點選 Network 就可以看到使用者請求該頁面的所有請求，其中點選 <%= cityName %> 的請求表單，可以查看自身的 cookie (在 Rquest Headers 中)，以及伺服端回應的 cookie (在 Response Headers 中)！</p>
+
+    <p><b>注意，cookie 的處理與發送是在後端執行，但儲存是交給當前的電腦哦！</b></p>
+
+    <p>若要消除 cookie 內容，只要關閉瀏覽器即可。</p>
+
+    <h3>cookie 會以 2 進制編成，所以看不懂也沒關係</h3>
+
+    <a href="/">返回首頁</a>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>城市名稱 - 搭配 03.js 範例</title>
+</head>
+<body>
+    <h1>歡迎來到 localhost:3000/<%= cityName %> </h1>
+    <p>這個網頁會在瀏覽器的 localStorage 中，儲存一個值(即城市名稱，例如這篇就會儲存 <%= cityName %>)</p>
+    <p>歡迎開啟 開發者模式，點選 Application -> localStorage， 就可以看到這個網頁塞了甚麼值進去囉！</p>
+    <p>塞值到 localStorage 的方式是，利用 js，歡迎打開網頁原始碼，就可以看到這個網頁如何利用 js 將值存放到 localStorage。</p>
+
+    <h3>記得先把 localStorage 的資料清掉！</h3>
+
+    <p><b>注意，localStorage 是直接在前端，也就是這個頁面執行，並不是在伺服端執行，而儲存也是存在當前的電腦哦！</b></p>
+
+    <p>若要消除 localStorage 內容，只要關閉瀏覽器即可。</p>
+
+    <a href="/">返回首頁</a>
+</body>
+
+    <script type="text/javascript">
+        // 讀取 localStorage 內容  <!-- 讀取 -->
+        // 若有值，就以 JSON.parse() 轉成陣列；若為 null，就建立成空矩陣
+        if(localStorage.getItem("cityHistory")){
+            console.log(localStorage.getItem("cityHistory"))
+            var arr = JSON.parse(localStorage.getItem("cityHistory"));
+        }else{
+            arr = [];
+        }
+
+        // 把紀錄添加至矩陣中  <!-- 插入 -->
+        // 因為是採用 ejs 模板，所以值的部份加上了雙引號，這樣就便字串囉！
+        arr.push("<%= cityName %>")
+
+        // 往 localStorage 中，存放數據  <!-- 再儲存 -->
+        // 因為 localStorage 是以字串儲存，索以透過 JSON.stringify() 轉成 JSON 字串
+        localStorage.setItem("cityHistory", JSON.stringify(arr))
+        
+    </script>
+</html>

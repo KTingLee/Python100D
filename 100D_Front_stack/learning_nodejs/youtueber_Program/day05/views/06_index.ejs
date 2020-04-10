@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搭配 06.js 範例</title>
+</head>
+<body>
+    <h1>以下輸入框可以輸入帳號、密碼</h1>
+    <p>帳號是 root，密碼是 1234</p>
+    <!-- 用傳統方式，僅以 html 標籤進行標單提交 -->
+    <form action="/login" method="post">
+        <p>
+            帳號: <input type="text" name="userName">
+        </p>
+        <p>
+            密碼: <input type="password" name="password">
+        </p>
+        <p>
+            <input type="submit" value="登入">
+        </p>
+    </form>
+</body>
+</html>

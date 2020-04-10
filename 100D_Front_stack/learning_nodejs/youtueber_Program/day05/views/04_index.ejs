@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:image/ico;base64,aWNv">
+    <title>搭配 04.js 範例</title>
+</head>
+<body>
+    <h1>麻煩前往 localhost:3000/**** </h1>
+    <input type="text" name="city"> <input type="button" id="btn1" value="前往城市">
+    <p>其中，**** 為任意城市的英文名字，例如 Taipei、Tainan</p>
+    <p>以下會顯示你去過的城市名稱：</p>
+
+    <div id="cityList">
+        <!-- 這邊會以 ejs 直接注入內容 -->
+        <%= cityHistory %>
+    </div>
+</body>
+
+    <script type="text/javascript">
+        // 監聽 id="btn1" 是否觸發 click 事件
+        document.getElementById("btn1").onclick = function(){
+            window.location = "/" + document.getElementsByName("city")[0].value;
+        }
+    </script>
+</html>
