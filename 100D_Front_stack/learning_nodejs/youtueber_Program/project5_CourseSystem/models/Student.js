@@ -8,7 +8,7 @@ var mongoose = require("mongoose");
 var studentSchema = new mongoose.Schema({
     "stu_id"   : Number,
     "Name"     : String,
-    "grade"    : Number,   // 學生的年級，1, 2, 3 代表國一、二、三；4, 5, 6 代表高一、二、三
+    "grade"    : String,   // 學生的年級，1, 2, 3 代表國一、二、三；4, 5, 6 代表高一、二、三
     "password" : String,
     "initpassword" : {type : Boolean, default : true}  // 是否為最初直接提供給學生的初始密碼，默認為 true；當用戶登入後，要求更改密碼，將便為 false
 });
@@ -17,6 +17,8 @@ var studentSchema = new mongoose.Schema({
 // 靜態方法
 // arr 是通過驗證的 Excel 學生資料
 studentSchema.statics.importStudents = function(arr, callback){
+    var gradeArr = ["國一", "國二", "國三", "高一", "高二", "高三"];
+
     // 先刪除整個 collection，因為是異步語句，所以新增的動作是放在匿名函數中(放到外面就變成邊刪除編新增啦！)
     mongoose.connection.collection("students").drop(function(){
         // 再匯入學生數據
@@ -26,7 +28,7 @@ studentSchema.statics.importStudents = function(arr, callback){
                 var s = new Student({
                     "stu_id" : arr[i].data[j][0],
                     "Name"   : arr[i].data[j][1],
-                    "grade"  : i+1,
+                    "grade"  : gradeArr[i],
                     "password" : Student.initPassword()
                 });
                 s.save(function(err){

@@ -34,6 +34,8 @@ app.get("/admin/courses",  adminCtrl.showAdminCourses);   // 管理員頁面 - �
 app.get("/admin/reports",  adminCtrl.showAdminReports);   // 管理員頁面 - 課程報表頁面
 
 
+app.get("/admin/students/export", adminCtrl.showAdminStudentsExport);
+
 
 
 

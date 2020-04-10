@@ -84,9 +84,8 @@ exports.uploadStudentsExcel = function(req, res){
 
 // 超級使用者學生清單頁面(導出學生頁面)
 exports.showAdminStudentsExport = function(req, res){
-    res.render("admin/adminStudentsExport", {
-        "page"  : "students",
-        "level" : "admin"
+    Student.find({}, function(err, results){
+        res.send(results)
     })
 }
 
