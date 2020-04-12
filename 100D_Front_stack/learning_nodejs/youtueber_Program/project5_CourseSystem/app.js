@@ -28,12 +28,16 @@ app.set("view engine", "ejs")
 // 若有 /student/add:var 這種用法，盡量放後面
 app.get("/admin", adminCtrl.showAdmin);                   // 管理員頁面 - 首頁
 app.get("/admin/students", adminCtrl.showAdminStudents);  // 管理員頁面 - 學生頁面(主頁面)
-app.get("/admin/students/allExport",  adminCtrl.showAdminAllStudents);  // Ajax 接口 - 獲取所有學生資料
-app.get("/admin/students/partExport", adminCtrl.showAdminPartStudents); // Ajax 接口 - 獲取部分學生資料
+
+
 app.get("/admin/students/import", adminCtrl.showAdminStudentsImport);  // 管理員頁面 - 學生頁面(導入學生頁面)
 app.post("/admin/students/import", adminCtrl.uploadStudentsExcel);     // 管理員頁面 - 學生頁面(導入學生頁面 - 上傳學生資料，並生成學生密碼)
 app.get("/admin/courses",  adminCtrl.showAdminCourses);   // 管理員頁面 - 課程管理頁面
 app.get("/admin/reports",  adminCtrl.showAdminReports);   // 管理員頁面 - 課程報表頁面
+
+app.get("/studentsData/allExport",  adminCtrl.showAdminAllStudents);  // Ajax 接口 - 獲取所有學生資料
+app.get("/studentsData/partExport", adminCtrl.showAdminPartStudents); // Ajax 接口 - 獲取部分學生資料
+app.post("/studentsData/:sid", adminCtrl.updateStudent);  // 學生頁面(管理員與學生採用相同接口) - 修改學生
 
 
 
