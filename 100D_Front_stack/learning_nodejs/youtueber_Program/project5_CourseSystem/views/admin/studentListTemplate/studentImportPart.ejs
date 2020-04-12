@@ -8,6 +8,7 @@
 <!-- 引入 jqGrid 所需檔案 -->
 <%- include ("../../include/jqGrid_include.ejs") %>
 
+
 <!-- 放置學生清單表格，使用 jqGrid 顯示之，所以要依照 jqGrid 的用法，在後面會以 jQuery 語法插入清單 -->
 <table id='studentsTable'></table>
 <!-- 分頁清單(jqGrid能夠自帶分頁設置，這邊可以設定每頁資料數) -->
@@ -64,11 +65,11 @@
                             "value" : value
                         }, function(mes){
                             if(mes.results == 1){
-                                alert("修改成功")
+                                showTip('修改成功！')
                             }else if(mes.results == -1){
-                                alert("修改失敗，資料庫中沒有這位學生")
+                                showTip("修改失敗，資料庫中沒有這位學生")
                             }else if(mes.results == -2){
-                                alert("連接資料庫失敗")
+                                showTip("連接資料庫失敗")
                             }
                         })
                     }

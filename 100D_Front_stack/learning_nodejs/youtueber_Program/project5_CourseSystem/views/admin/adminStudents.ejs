@@ -6,9 +6,12 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
     <title>管理員面板 - 選課系統</title>
     <%- include ("../include/includeFiles.ejs") %>
+    <link rel="stylesheet" href="/css/tip-yellow.css" type="text/css" />
+    <script type="text/javascript" src="/js/jquery.poshytip.min.js"></script>
 </head>
 
 <body class='main page'>
+
     <!-- Navbar -->
     <%- include ("../include/navBar.ejs") %>
 
@@ -31,13 +34,14 @@
                         <a href="/admin/students">
                             所有學生清單
                         </a>
+                    <a id="poshytip_tip" ></a>
+
                     <div class='panel-tools'>
                         <a class="btn" href="/admin/students?Ajax=True">
                             Ajax 分批導入學生的分頁清單
                         </a>
                     </div>
                 </div>
-
 
                 <div class='panel-body'>
                     <!-- 判斷是否為 Ajax 分批製作清單 -->
@@ -48,7 +52,7 @@
                             </div>
                         </div>
                         <%- include ("./studentListTemplate/studentImportPart.ejs") %>
-                        
+
                     <% }else{ %>
                         <%- include ("./studentListTemplate/studentImportOnce.ejs") %>
                     <% } %>
@@ -56,5 +60,23 @@
             </div>
         </div>
     </div>
+
+
+
+
+<!-- 學生資料被修改後，會執行提示框，這邊是提示框的參數 -->
+<script>
+    function showTip(content){
+        $('#poshytip_tip').poshytip({
+            content: content,
+            showOn: 'none',
+            alignTo: 'target',
+            alignX: 'right',
+            alignY: 'center'
+        });
+        $('#poshytip_tip').poshytip('show').poshytip('hideDelayed', 500);
+    }
+    
+</script>
 </body>
 </html>

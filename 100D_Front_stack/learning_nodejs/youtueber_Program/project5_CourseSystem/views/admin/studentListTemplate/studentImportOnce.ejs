@@ -52,11 +52,11 @@
                             "value" : value
                         }, function(mes){
                             if(mes.results == 1){
-                                alert("修改成功")
+                                showTip('修改成功！')
                             }else if(mes.results == -1){
-                                alert("修改失敗，資料庫中沒有這位學生")
+                                showTip("修改失敗，資料庫中沒有這位學生")
                             }else if(mes.results == -2){
-                                alert("連接資料庫失敗")
+                                showTip("連接資料庫失敗")
                             }
                         })
                     }
