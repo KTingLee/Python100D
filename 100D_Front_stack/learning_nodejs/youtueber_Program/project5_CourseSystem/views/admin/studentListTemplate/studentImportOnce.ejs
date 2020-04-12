@@ -1,0 +1,47 @@
+<!-- 一口氣讀取所有學生資料並製作成學生清單的方式 -->
+
+<!-- 引入 jqGrid 所需檔案 -->
+<%- include ("../../include/jqGrid_include.ejs") %>
+
+<!-- 放置學生清單表格，使用 jqGrid 顯示之，所以要依照 jqGrid 的用法，在後面會以 jQuery 語法插入清單 -->
+<table id='studentsTable'></table>
+<!-- 分頁清單(jqGrid能夠自帶分頁設置，這邊可以設定每頁資料數) -->
+<div id='pageNav'></div>
+
+
+<!-- 製作 jqGrid 的語法 -->
+<script>
+    $(function(){
+        pageInit();
+    });
+
+    function pageInit(){
+        jQuery("#studentsTable").jqGrid(
+                {
+                    url : '/admin/students/allExport',  // 獲取學生資料接口
+                    datatype : "json",
+                    colNames : [ '學號', '姓名', '年級', '密碼', '是否為初始密碼'],
+                    colModel : [ 
+                                 {name : 'stu_id',         width : 55, editable:true},
+                                 {name : 'Name',           width : 90, editable:true},
+                                 {name : 'grade',          width : 90, editable:true, edittype : "select",
+                                        editoptions : {value : "國一:國一;國二:國二;國三:國三;高一:高一;高二:高二;高三:高三"}},
+                                 {name : 'password',       width : 100, editable:true},
+                                 {name : 'initpassword',   width : 80,align : "right", editable:true}
+                               ],
+                    rowNum : 10,
+                    rowList : [ 10, 20, 30 ],
+                    pager : '#pageNav',
+                    sortname : 'stu_id',
+                    viewrecords : true,
+                    sortorder : "asc",
+                    loadonce: true,
+                    height : 210,
+                    autowidth  : true,
+                    cellEdit : true,
+                    cellsubmit : "clientArray"
+                });
+        jQuery("#studentsTable").jqGrid('navGrid', '#pageNav', {edit : false,add : false,del : false});
+        jQuery("#studentsTable").jqGrid('inlineNav', "#pageNav");
+    }
+</script>

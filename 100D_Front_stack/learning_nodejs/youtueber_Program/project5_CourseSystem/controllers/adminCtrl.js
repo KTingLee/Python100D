@@ -7,6 +7,7 @@ var path = require("path");
 var fs = require("fs");
 var xlsx = require("node-xlsx");
 var Student = require("../models/Student.js")
+var url = require("url")
 
 
 // 超級使用者首頁 (路徑是相對 views)
@@ -19,7 +20,16 @@ exports.showAdmin = function(req, res){
 
 // 超級使用者學生清單頁面(主頁面)
 exports.showAdminStudents = function(req, res){
+    // 分析學生清單的接口是 所有學生資料 還是 分批的學生資料
+    var AjaxImport = '';
+    if(url.parse(req.url, true).query.Ajax){
+        AjaxImport = url.parse(req.url, true).query.Ajax;
+    }else{
+        AjaxImport = false;
+    }
     res.render("admin/adminStudents", {
+        // 分析是否為 Ajax 
+        "AjaxImport" : AjaxImport,
         "page"  : "students",
         "level" : "admin"
     })
@@ -43,6 +53,7 @@ exports.uploadStudentsExcel = function(req, res){
     form.parse(req, (err, fields, files) => {
         if(!files.studentExcel){
             res.send("請上傳文件！")
+            return;
         };
 
         // 檢查檔案是否為 excel，仍採用 path.extname 過濾
@@ -82,11 +93,45 @@ exports.uploadStudentsExcel = function(req, res){
     });
 }
 
-// 超級使用者學生清單頁面(導出學生頁面)
-exports.showAdminStudentsExport = function(req, res){
+// 超級使用者學生清單頁面的接口 (一口氣導出所有學生)
+exports.showAdminAllStudents = function(req, res){
     Student.find({}, function(err, results){
         res.send(results)
     })
+}
+
+// 超級使用者學生清單頁面的接口 (依照前端請求的數量導出學生)
+// 前端傳遞GET請求，路由例如 admin/students/partExport?_search=false&nd=1586593334266&rows=10&page=1&sidx=initpassword&sord=desc
+// 解析此路由，以獲得對應的學生資料，再將其傳至 Ajax 接口
+exports.showAdminPartStudents = function(req, res){
+    // 解析GET請求
+    var page = url.parse(req.url, true).query.page;  // 目前讀取的是第幾頁
+    var rows = url.parse(req.url, true).query.rows; // 每頁要顯示幾筆資料
+    var sidx = url.parse(req.url, true).query.sidx; // 以哪個 index 排序
+    var sord = url.parse(req.url, true).query.sord; // 排序方式
+
+    // 若採用升冪排序，則 sordNumber 為 1
+    var sordNumber = sord == 'asc' ? 1 : -1;
+
+    // 因為不能確定以哪個 index 排序，所以建立一個 JSON 物件，並附上屬性
+    var sordObj = {};
+    sordObj[sidx] = sordNumber;
+    console.log(sordObj);
+
+    // 依照前端要求，輸出對應的學生資料
+    Student.count({}, function(err, count){
+        var total = Math.ceil(count / rows);  // jqGrid 的總頁數(會根據 rows 而有所改變)
+
+        // 輸出學生資料，格式必須依照 jqGrid 的 API 要求
+        Student.find({}).sort(sordObj).limit(parseInt(rows)).skip(rows * (page-1)).exec(function(err, results){
+            res.json({
+                "page"    : page,
+                "total"   : total,
+                "records" : count,
+                "rows"    : results
+            });
+        });
+    });
 }
 
 // 超級使用者課程管理頁面
