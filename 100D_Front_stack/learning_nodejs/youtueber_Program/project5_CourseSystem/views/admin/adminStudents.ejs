@@ -42,7 +42,13 @@
                 <div class='panel-body'>
                     <!-- 判斷是否為 Ajax 分批製作清單 -->
                     <% if(AjaxImport){ %>
+                        <div class='row searchBox'>
+                            <div class="col-md-4">
+                                快速查詢：<input type="text" placeholder="  例如輸入 陳" id="quickSearch">
+                            </div>
+                        </div>
                         <%- include ("./studentListTemplate/studentImportPart.ejs") %>
+                        
                     <% }else{ %>
                         <%- include ("./studentListTemplate/studentImportOnce.ejs") %>
                     <% } %>

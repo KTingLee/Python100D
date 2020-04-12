@@ -110,6 +110,24 @@ exports.showAdminPartStudents = function(req, res){
     var sidx = url.parse(req.url, true).query.sidx; // 以哪個 index 排序
     var sord = url.parse(req.url, true).query.sord; // 排序方式
 
+    // 若有輸入快速查詢，則會放在 keyword 屬性中
+    var keyword = url.parse(req.url, true).query.keyword; // 快速查詢字元
+    if(keyword === undefined || keyword == ""){
+        var findFilter = {};    
+    }else{
+        // 將快速查詢的結果轉成正規表達式物件，並做全局搜索，意即 /keyword/g  (其中 keyword 是網址列中的參數)
+        var regexp = new RegExp(keyword, "g");
+
+        // 製作搜尋格式，待會會放在 find()、count() 中
+        var findFilter = {
+            $or : [
+                    {"stu_id" : regexp},
+                    {"Name" : regexp},
+                    {"grade" : regexp}
+            ]
+        }
+    }
+
     // 若採用升冪排序，則 sordNumber 為 1
     var sordNumber = sord == 'asc' ? 1 : -1;
 
@@ -119,11 +137,12 @@ exports.showAdminPartStudents = function(req, res){
     console.log(sordObj);
 
     // 依照前端要求，輸出對應的學生資料
-    Student.count({}, function(err, count){
+    Student.count(findFilter, function(err, count){
+        if(err){console.log(err)}
         var total = Math.ceil(count / rows);  // jqGrid 的總頁數(會根據 rows 而有所改變)
 
         // 輸出學生資料，格式必須依照 jqGrid 的 API 要求
-        Student.find({}).sort(sordObj).limit(parseInt(rows)).skip(rows * (page-1)).exec(function(err, results){
+        Student.find(findFilter).sort(sordObj).limit(parseInt(rows)).skip(rows * (page-1)).exec(function(err, results){
             res.json({
                 "page"    : page,
                 "total"   : total,

@@ -6,7 +6,7 @@ var mongoose = require("mongoose");
 
 // 建立 學生Student類別 的 Schema
 var studentSchema = new mongoose.Schema({
-    "stu_id"   : Number,
+    "stu_id"   : String,
     "Name"     : String,
     "grade"    : String,   // 學生的年級，1, 2, 3 代表國一、二、三；4, 5, 6 代表高一、二、三
     "password" : String,

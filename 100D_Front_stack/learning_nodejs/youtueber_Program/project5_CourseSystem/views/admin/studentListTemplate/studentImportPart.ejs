@@ -14,8 +14,8 @@
 <div id='pageNav'></div>
 
 
-<!-- 製作 jqGrid 的語法 -->
 <script>
+    // 製作 jqGrid 的語法
     $(function(){
         pageInit();
     });
@@ -76,4 +76,19 @@
         jQuery("#studentsTable").jqGrid('navGrid', '#pageNav', {edit : false,add : false,del : false});
         jQuery("#studentsTable").jqGrid('inlineNav', "#pageNav");
     }
+
+
+    // 監聽快速查詢輸入框，每接收一個字就送出一個 Ajax 請求
+    // 監聽 input 事件，當輸入框每接收一個字元就會觸發一次，而觸發 input 事件時
+    // jqGrid 就獲取新數據，並向後端發送 Ajax 請求
+    $('#quickSearch').bind('input', function(){
+        var keyword = $(this).val();
+        // 讓 jqGrid 清空內容並重新發送數據
+        $("#studentsTable").jqGrid("clearGridData").jqGrid("setGridParam",{
+            datatype : 'json',
+            postData : {"keyword" : keyword},  // postData 的內容會直接加在 url
+            page : 1
+        }).trigger("reloadGrid");  // 表格重載
+    })
+
 </script>
