@@ -134,7 +134,6 @@ exports.showAdminPartStudents = function(req, res){
     // 因為不能確定以哪個 index 排序，所以建立一個 JSON 物件，並附上屬性
     var sordObj = {};
     sordObj[sidx] = sordNumber;
-    console.log(sordObj);
 
     // 依照前端要求，輸出對應的學生資料
     Student.count(findFilter, function(err, count){
@@ -188,6 +187,20 @@ exports.updateStudent = function(req, res){
     })
 
 }
+
+// 增加學生頁面
+exports.showAdminStudentsAdd = function(req, res){
+    res.render("admin/adminStudentsAdd", {
+        "page"  : "students",
+        "level" : "admin"
+    })
+}
+
+// 增加學生頁面 - 前端傳來學生資料，將其加入至資料庫
+exports.doAdminStudentsAdd = function(req, res){
+    res.json({'results':1})
+}
+
 
 // 超級使用者課程管理頁面
 exports.showAdminCourses = function(req, res){
