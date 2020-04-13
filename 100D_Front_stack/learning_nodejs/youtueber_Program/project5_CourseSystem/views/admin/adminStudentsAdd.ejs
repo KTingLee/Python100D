@@ -94,23 +94,42 @@
     var invalid = invalidInit();
 
 
-    // 檢驗學號，檢查是否為 8 位數字，若合格，則 invalid 中的 stu_id 值便為 false
-    // 若驗證沒過還會增加提示
-    $("#stu_id").blur(function(){
-        var stu_id = $(this).val();
-        if(/^[\d]{8}$/.test(stu_id)){
-            invalid.stu_id = false;
-        }else{
-            // after 表示某元素後方建立新元素
-            $(this).after(alertTip("danger", "學號必須為 8 位數字。"))
-            invalid.stu_id = true;
-        }
-    })
-
     // 透過 jQuery 建立元素
     function alertTip(className, content){
         return $("<div class='alert myalert alert-" + className + "'>" + content + "</div>");
     }
+
+
+    // 檢驗學號，檢查是否為 8 位數字，若合格，則 invalid 中的 stu_id 值便為 false
+    // 若驗證沒過還會增加提示
+    $("#stu_id").blur(function(){
+        var stu_id = $(this).val();
+        if(!/^[\d]{8}$/.test(stu_id)){
+            // after 表示某元素後方建立新元素
+            $(this).after(alertTip("danger", "學號必須為 8 位數字。"))
+            invalid.stu_id = true;
+            return;
+        }
+
+        // 目前的 this 是指向 #stu_id 物件，但等等 ajax 函數中的 this 會指向 ajax 函數本身(除非用箭頭)
+        // 所以先將 "指向 #stu_id 的 this" 保存(變數可用 $ 做為開頭)
+        var $this = $(this)
+
+        // 向後端確認該學號是否存在
+        $.ajax({
+            "url"  : "/studentsData/" + stu_id,
+            "type" : "propfind",
+            "success" : function(mes){
+                if(mes.results == 0){
+                    invalid.stu_id = false;
+                    $($this).after(alertTip("success", "學號可使用。"));
+                }else{
+                    invalid.stu_id = true;
+                    $($this).after(alertTip("warning", "學號已存在。"));
+                }
+            }
+        })
+    })
 
 
     // 學習對 jQuery 物件新增靜態方法，讓警告框的操作更優雅
@@ -211,14 +230,24 @@
             "grade" : grade,
             "initPassword" : initPassword
         }, function(mes){
-            // 成功跳提示，並清除輸入框內容，以及重制 invalid 物件
+            // 成功跳提示，並清除輸入框內容，以及重置 invalid 物件
             if(mes.results == 1){
                 alert('已成功新增學生！')
                 $.each($('[checkValid]'), function(index, item){
                     $(item).val('').clearTip();
                 });
-            }else{
-                alert('添加失敗。')
+            }else if(mes.results == -1){
+                alert('伺服器出錯了..')
+            }else if(mes.results == -2){
+                alert('別亂改網頁原始碼，我還是會知道你學號不正確的！')
+            }else if(mes.results == -3){
+                alert('別亂改網頁原始碼，我還是會知道你名字沒有填的！')
+            }else if(mes.results == -4){
+                alert('別亂改網頁原始碼，我還是會知道你年級還沒選的！')
+            }else if(mes.results == -5){
+                alert('別亂改網頁原始碼，我還是會知道你密碼還沒填的！')
+            }else if(mes.results == -6){
+                alert('別亂改網頁原始碼，我還是會知道你學號是重複的！')
             }
         })
     })
