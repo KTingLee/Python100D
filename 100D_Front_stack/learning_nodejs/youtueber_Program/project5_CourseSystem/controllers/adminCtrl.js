@@ -283,6 +283,25 @@ exports.doAdminStudentsAdd = function(req, res){
 }
 
 
+// 前端發送 delete 請求，並將欲刪除對象之資料放在 post 表單
+// 一樣以 formidable 解析 post 表單，再刪除資料庫中的資料
+exports.deleteStudents = function(req, res){
+    // 解析 post 資料
+    const form = formidable({});
+    form.parse(req, (err, fields, files) => {
+        var stu_id = fields.arr;
+        // 直接從資料庫刪除學生
+        Student.remove({"stu_id" : stu_id}, function(err, results){
+            if(err){
+                res.json({"results" : -1});
+                return;
+            }
+            res.json({"results" : results.deletedCount});
+
+        })
+    })
+}
+
 // 超級使用者課程管理頁面
 exports.showAdminCourses = function(req, res){
     res.render("admin/adminCourse", {

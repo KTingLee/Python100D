@@ -47,7 +47,8 @@
                     viewrecords : true,
                     sortorder : "asc",
                     height : 210,
-                    loadonce: false,  // 若採用分批讀取學生資料的方式，此參數必須設為 false
+                    loadonce: false,     // 若採用分批讀取學生資料的方式，此參數必須設為 false
+                    multiselect : true,  // 開啟清單選擇功能
                     autowidth  : true,
                     cellEdit : true,
                     cellsubmit : "clientArray", // 預設為 remote，設成 clientArray 就可以防止 cell 操作完就要發送 Ajax 請求
@@ -56,7 +57,7 @@
                     // rowid 預設是 jqGrid 自己的列編號，但若在 colModel 中，有對某個欄位設定 key: true，則 rowid 將變為該欄位的值
                     afterSaveCell : function(rowid, cellname, value, iRow, iCol){
                         // 依照選擇的 cell 獲得學號，這邊不把學號設成主鍵，所以要自己抓值
-                        var sid = $('#studentsTable').getCell(iRow, 0)
+                        var sid = $('#studentsTable').getCell(iRow, 1)
 
                         // 向後端發送 Ajax 請求(採用POST請求)，以利後端修改學生資料，並等待後端回應
                         $.post('/studentsData/' + sid,{
