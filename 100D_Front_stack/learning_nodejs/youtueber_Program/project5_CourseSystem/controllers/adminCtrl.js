@@ -314,7 +314,6 @@ exports.downloadStudents = function(req, res){
 
     // 迭代器，用來取代迴圈，避免異步語句因迴圈產生的問題(別忘了要啟動)
     function iterator(i){
-        console.log(i)
         // 迭代器終止條件
         if(i == 6){
             // 將 excelRes 的內容轉成 buffer
@@ -322,12 +321,11 @@ exports.downloadStudents = function(req, res){
             // 以 fs 生成 excel 檔案(同步語句)，在 public 文件夾中生成，就不需要再為檔案設置路由
             var fileName = dateFormat(new Date(), '學生資料yyyy年MM月dd日hhmmss');
             fs.writeFile("./public/excel/" + fileName + ".xlsx", buffer, function(err){
-                if(err){
-                    res.send("錯誤")
-                }
                 // 對使用者連線重定向，直接指向該檔案，便會觸發瀏覽器下載(路徑寫路由)
                 res.redirect("/excel/" + fileName + ".xlsx");
             })
+            // 記得要加上這個 return，不然迭代器不會終止
+            return;
         }
 
         // 先讀取資料庫(異步語句)
