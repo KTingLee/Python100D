@@ -32,7 +32,8 @@ app.get("/admin/students/import"   , adminCtrl.showAdminStudentsImport);  // 管
 app.post("/admin/students/import"  , adminCtrl.uploadStudentsExcel);      // 管理員頁面 - 學生頁面(導入學生頁面 - 上傳學生資料，並生成學生密碼)
 app.get("/admin/students/add"      , adminCtrl.showAdminStudentsAdd);     // 管理員頁面 - 學生頁面(增加學生頁面)
 app.post("/admin/students/add"     , adminCtrl.doAdminStudentsAdd);       // 管理員頁面 - 學生頁面(增加一位學生至資料庫)
-app.delete("/admin/students/delete", adminCtrl.deleteStudents) ;          // 管理員頁面 - 學生頁面(刪除學生)
+app.delete("/admin/students/delete", adminCtrl.deleteStudents);           // 管理員頁面 - 學生頁面(刪除學生)
+app.get("/admin/students/download", adminCtrl.downloadStudents);          // 下載學生資料
 
 app.get("/studentsData/allExport"  , adminCtrl.showAdminAllStudents);     // Ajax 接口 - 獲取所有學生資料
 app.get("/studentsData/partExport" , adminCtrl.showAdminPartStudents);    // Ajax 接口 - 獲取部分學生資料
