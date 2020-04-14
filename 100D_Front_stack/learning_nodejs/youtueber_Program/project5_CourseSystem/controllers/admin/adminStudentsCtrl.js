@@ -1,5 +1,5 @@
 /*
-與超級使用者有關的模組
+超級使用者 - 學生頁面 的模組
 */
 
 var formidable = require("formidable");
@@ -11,14 +11,6 @@ var url = require("url");
 var dateFormat = require('dateformat');
 
 
-// 超級使用者首頁 (路徑是相對 views)
-exports.showAdmin = function(req, res){
-    res.render("admin/index", {
-        "page"  : "index",
-        "level" : "admin"
-    })
-}
-
 // 超級使用者學生清單頁面(主頁面)
 exports.showAdminStudents = function(req, res){
     // 分析學生清單的接口是 所有學生資料 還是 分批的學生資料
@@ -28,7 +20,7 @@ exports.showAdminStudents = function(req, res){
     }else{
         AjaxImport = false;
     }
-    res.render("admin/adminStudents", {
+    res.render("admin/students/adminStudents", {
         // 分析是否為 Ajax 
         "AjaxImport" : AjaxImport,
         "page"  : "students",
@@ -38,7 +30,7 @@ exports.showAdminStudents = function(req, res){
 
 // 超級使用者學生清單頁面(導入學生頁面)
 exports.showAdminStudentsImport = function(req, res){
-    res.render("admin/adminStudentsImport", {
+    res.render("admin/students/adminStudentsImport", {
         "page"  : "students",
         "level" : "admin"
     })
@@ -191,7 +183,7 @@ exports.updateStudent = function(req, res){
 
 // 增加學生頁面
 exports.showAdminStudentsAdd = function(req, res){
-    res.render("admin/adminStudentsAdd", {
+    res.render("admin/students/adminStudentsAdd", {
         "page"  : "students",
         "level" : "admin"
     })
@@ -352,22 +344,3 @@ exports.downloadStudents = function(req, res){
     // 啟動迭代器！
     iterator(0);
 }
-
-
-// 超級使用者課程管理頁面
-exports.showAdminCourses = function(req, res){
-    res.render("admin/adminCourse", {
-        "page"  : "courses",
-        "level" : "admin"
-    })
-}
-
-// 超級使用者報表頁面
-exports.showAdminReports = function(req, res){
-    res.render("admin/adminReports", {
-        "page"  : "reports",
-        "level" : "admin"
-    })
-}
-
-
