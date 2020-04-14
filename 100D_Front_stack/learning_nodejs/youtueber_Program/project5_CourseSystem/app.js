@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var session = require("express-session");
 var adminCtrl = require("./controllers/admin/adminCtrl.js");
 var adminStudentsCtrl = require("./controllers/admin/adminStudentsCtrl.js")
+var adminCoursesCtrl = require("./controllers/admin/adminCoursesCtrl.js")
 var mainCtrl = require("./controllers/mainCtrl.js");
 
 // 連結資料庫 - CourseSystem  (記得先打開數據庫)
@@ -42,7 +43,13 @@ app.get("/studentsData/partExport"  , adminStudentsCtrl.showAdminPartStudents); 
 app.post("/studentsData/:sid"       , adminStudentsCtrl.updateStudent);            // 學生主頁面 : Ajax 接口(後端獲取資料) - 修改學生
 app.propfind("/studentsData/:sid"   , adminStudentsCtrl.checkStudentExist);        // 學生主頁面 : Ajax 接口(後端獲取資料) - 檢查學生學號是否存在
 
-app.get("/admin/courses"           , adminCtrl.showAdminCourses);  // 管理員頁面 - 課程管理頁面
+app.get("/admin/courses"           , adminCoursesCtrl.showAdminCourses);        // 管理員頁面 - 課程管理頁面
+app.get("/admin/courses/import"    , adminCoursesCtrl.showAdminCoursesImport);  // 管理員頁面 - 導入課程頁面
+app.post("/admin/courses/import"   , adminCoursesCtrl.uploadCoursesJSON);      // 管理員頁面 - 導入課程頁面(上傳課程資料)
+app.get("/admin/courses/add"       , adminCoursesCtrl.showAdminCoursesAdd);   // 管理員頁面 - 新增課程頁面
+app.post("/admin/courses/add"      , adminCoursesCtrl.doAdminCoursesAdd);     // 管理員頁面 - 新增課程頁面(增加一門課程至資料庫)
+
+
 app.get("/admin/reports"           , adminCtrl.showAdminReports);  // 管理員頁面 - 課程報表頁面
 
 
