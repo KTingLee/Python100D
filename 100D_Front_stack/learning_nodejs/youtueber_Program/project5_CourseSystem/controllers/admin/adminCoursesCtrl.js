@@ -177,8 +177,88 @@ exports.showAdminCoursesAdd = function(req, res){
 }
 
 
-exports.doAdminCoursesAdd = function(req, res){
+// 檢查課程是否存在
+exports.checkCourseExist = function(req, res){
+    // 獲得學生學號
+    var cid = req.params.cid;
+    
+    // 從資料庫中尋找該課程
+    Course.count({"cid":cid}, function(err, count){
+        if(err){
+            res.json({"results" : -1});   // -1 表示資料庫錯誤
+        }else{
+            res.json({"results" : count}); // 0 表示學號可使用
+        }
+    })
+}
 
+// 前端發送 ajax (且為 POST 請求)，所以用 formidable 解析之
+// 在後端也會做基本檢驗，檢驗通過與否都會回傳訊息給前端，若成功亦會加入資料庫
+exports.doAdminCoursesAdd = function(req, res){
+    // 由前端提交的 post 表單獲取資料
+    const form = formidable({});
+    form.parse(req, (err, fields, files) => {
+        if(err){
+            res.json({"results" : -1});  // -1 表示伺服器出錯
+            return;
+        }
+
+        // 解析資料
+        var cid       = fields.cid
+        var Name      = fields.Name
+        var courseDay = fields.courseDay
+        var teacher   = fields.teacher
+        var maxMember = fields.maxMember
+        var intro     = fields.intro
+        var allow     = fields.allow
+
+    /*--------------------驗證流程--------------------*/
+
+        // 驗證資料是否有空值
+        for(let k in fields){
+            if(fields.k == ""){
+                res.json({"results" : -2});  // -2 表示有資料為空
+                return;
+            }
+        }
+
+        // 驗證選課人數是否大於等於 10 人
+        if(maxMember < 10){
+            res.json({"results" : -3});  // -3 表示選課人數不足
+            return;
+        }
+
+
+        // 驗證課程是否重複(此為異步語句)
+        Course.count({"cid":cid}, function(err, count){
+            if(err){
+                res.json({"results" : -1});  // -1 表示伺服器出錯
+                return;
+            }else if(count > 0){
+                res.json({"results" : -4}); // -4 表示學號已重複
+                return;
+            }
+
+            // 課程編號若可使用，則將該課程加入至資料庫
+            var c = new Course({
+                "cid"       : cid,
+                "Name"      : Name,
+                "courseDay" : courseDay,
+                "teacher"   : teacher,
+                "maxMember" : maxMember,
+                "intro"     : intro,
+                "allow"     : allow
+            });
+            // 儲存至資料庫
+            c.save(function(err){
+                if(err){
+                    res.json({"results" : -1});  // -1 表示伺服器出錯
+                    return;
+                }
+                    res.json({"results" : 1}); // 1 表示成功儲存
+            })
+        })
+    })
 }
 
 

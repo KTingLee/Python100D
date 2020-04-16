@@ -33,47 +33,68 @@
                 <div class='panel-heading'>
                     <i class='icon-beer icon-large'></i>
                         <span>
-                            增加學生
+                            增加課程
                         </span>
                 </div>
 
                 <div class='panel-body'>
                     <div class="col-lg-2">
                         <p>
-                            學號：
+                            課程編號：
                         </p>
                         <p>
-                            <input type="text" class="form-control" id="stu_id" checkValid />
+                            <input type="text" class="form-control" id="cid" checkValid />
                         </p>
                         <p>
-                            姓名：
+                            課程名稱：
                         </p>
                         <p>
                             <input type="text" class="form-control" id="Name" checkValid />
                         </p>
                         <p>
-                            年級：
+                            上課時間：
                         </p>
                         <p>
-                            <select class="form-control" id="grade" checkValid>
+                            <select class="form-control" id="courseDay" checkValid>
                             　<option value="">請選擇</option>
-                            　<option value="國一">國一</option>
-                            　<option value="國二">國二</option>
-                            　<option value="國三">國三</option>
-                            　<option value="高一">高一</option>
-                            　<option value="高二">高二</option>
-                            　<option value="高三">高三</option>
+                            　<option value="星期二">星期二</option>
+                            　<option value="星期四">星期四</option>
+                            　<option value="星期五">星期五</option>
                             </select>
                         </p>
                         <p>
-                            初始密碼：
+                            限制選課年級：
+                        </p>
+                        <p id="allow_box">
+                            <label><input type="checkbox" name="allow" value="國一" checkValid />國一</label>
+                            <label><input type="checkbox" name="allow" value="國二" checkValid />國二</label>
+                            <label><input type="checkbox" name="allow" value="國三" checkValid />國三</label>
+                            <label><input type="checkbox" name="allow" value="高一" checkValid />高一</label>
+                            <label><input type="checkbox" name="allow" value="高二" checkValid />高二</label>
+                            <label><input type="checkbox" name="allow" value="高三" checkValid />高三</label>
                         </p>
                         <p>
-                            <input type="text" class="form-control" id="initPassword" checkValid />
+                            教師名稱：
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" id="teacher" checkValid />
+                        </p>
+                        <p>
+                            人數：
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" id="maxMember" checkValid />
+                        </p>
+                        <p>
+                            課程簡介：
+                        </p>
+                        <p>
+                            <textarea class="form-control" cols="100" rows="" id="intro" checkValid></textarea>
                         </p>
 
                         <p>
-                            <input type="button" value="提交" class="btn btn-success" id="subBtn" disabled="disabled">
+                            <!-- <input type="button" value="提交" class="btn btn-success" id="subBtn" disabled="disabled"> -->
+                            <input type="button" value="提交" class="btn btn-success" id="subBtn">
                         </p>
                     </div>
                 </div>
@@ -85,10 +106,14 @@
     // 建立一個物件，用以判斷輸入框是否都合格，當 invalid 的所有元素值都為 false 才會讓提交鈕可點選
     function invalidInit(){
         return invalid = {
-            "stu_id" : true,
-            "Name"   : true,
-            "grade"  : true,
-            "initPassword" : true
+            "cid"       : true,
+            "Name"      : true,
+            "courseDay" : true,
+            "teacher"   : true,
+            "maxMember" : true,
+            "intro"     : true,
+            "courseDay" : true,
+            "allow"     : true
         }
     }
     var invalid = invalidInit();
@@ -100,32 +125,34 @@
     }
 
 
-    // 檢驗學號，檢查是否為 8 位數字，若合格，則 invalid 中的 stu_id 值便為 false
+    // 檢驗課程編號，檢查是否是否重複，若沒重複則 invalid 中的 cid 為 false
     // 若驗證沒過還會增加提示
-    $("#stu_id").blur(function(){
-        var stu_id = $(this).val();
-        if(!/^[\d]{8}$/.test(stu_id)){
-            // after 表示某元素後方建立新元素
-            $(this).after(alertTip("danger", "學號必須為 8 位數字。"))
-            invalid.stu_id = true;
+    $("#cid").blur(function(){
+        var cid = $(this).val();
+
+        if(cid == ''){
+            invalid.cid = false;
+            $(this).after(alertTip("danger", "課程編號不可為空。"));
             return;
         }
 
-        // 目前的 this 是指向 #stu_id 物件，但等等 ajax 函數中的 this 會指向 ajax 函數本身(除非用箭頭)
-        // 所以先將 "指向 #stu_id 的 this" 保存(變數可用 $ 做為開頭)
-        var $this = $(this)
+        // 目前的 this 是指向 #cid 物件，但等等 ajax 函數中的 this 會指向 ajax 函數本身(除非用箭頭)
+        // 所以先將 "指向 #cid 的 this" 保存(變數可用 $ 做為開頭)
+        // 但在學生新增頁面已經使用過備份方法，所以此處用箭頭函數來解決 this 衝突的問題
+        /* var $this = $(this) */
 
-        // 向後端確認該學號是否存在
+        // 向後端確認該課程編號是否存在
         $.ajax({
-            "url"  : "/studentsData/" + stu_id,
+            "url"  : "/coursesData/" + cid,
             "type" : "propfind",
-            "success" : function(mes){
+            // success 的函數採用箭頭函數，這樣 this 物件就不會指向 ajax 的函數
+            "success" : mes => {
                 if(mes.results == 0){
-                    invalid.stu_id = false;
-                    $($this).after(alertTip("success", "學號可使用。"));
+                    invalid.cid = false;
+                    $(this).after(alertTip("success", "課程可使用。"));  // 直接使用 this
                 }else{
-                    invalid.stu_id = true;
-                    $($this).after(alertTip("warning", "學號已存在。"));
+                    invalid.cid = true;
+                    $(this).after(alertTip("warning", "課程已存在。"));
                 }
             }
         })
@@ -148,46 +175,79 @@
         }
     })
 
+    // 因為課程名稱、教師名稱以及課程介紹都是文字類型的輸入框，只要不留白就通過。
+    // 所以將驗證流程以函數包裝。
+    function listenText_blur (id){
+        $("#" + id).blur(function(){
+            var content = $(this).val();
+            if(content != ''){
+                invalid[id] = false;
+                $(this).alertTip2("success", "OK!")
+            }else{
+                // after 表示某元素後方建立新元素，以靜態方法產生
+                $(this).alertTip2("danger", "課程名稱不能為空")
+                invalid[id] = true;
+            }
+        })
+    }
 
-    // 驗證姓名是否為空，若不為空，則 invalid 的 Name 屬性變為 false
+    // 驗證課程名稱是否為空，若不為空，則 invalid 的 Name 屬性變為 false
     // 這邊的警告框是以靜態方法建立的
-    $("#Name").blur(function(){
-        var Name = $(this).val();
-        if(Name != ''){
-            invalid.Name = false;
+    listenText_blur("Name");
+
+    // 驗證教師名稱是否留白
+    listenText_blur("teacher");
+
+    // 驗證課程簡介是否留白
+    listenText_blur("intro");
+
+
+    // 驗證課程人數是否有提供，最低 10 人。
+    $("#maxMember").blur(function(){
+        var member = $(this).val();
+        if(member >= 10){
+            invalid.maxMember = false;
             $(this).alertTip2("success", "OK!")
         }else{
             // after 表示某元素後方建立新元素，以靜態方法產生
-            $(this).alertTip2("danger", "姓名不能為空")
-            invalid.Name = true;
+            $(this).alertTip2("danger", "課程人數最低10人，否則不開課")
+            invalid.maxMember = true;
         }
     })
 
-    // 驗證年級是否有選擇，採用 change 事件做檢查(只要值有改變就觸發 change 事件)
-    $("#grade").change(function(){
-        var grade = $(this).val();
-        if(grade != ''){
-            invalid.grade = false;
+
+    // 驗證上課日期是否有選擇，採用 change 事件做檢查(只要值有改變就觸發 change 事件)
+    $("#courseDay").change(function(){
+        var courseDay = $(this).val();
+        if(courseDay != ''){
+            invalid.courseDay = false;
         }else{
             // after 表示某元素後方建立新元素，以靜態方法產生
-            $(this).alertTip2("danger", "年級尚未選擇")
-            invalid.grade = true;
+            $(this).alertTip2("danger", "課程時間尚未選擇")
+            invalid.courseDay = true;
         }
     })    
 
-    // 提供初始密碼
-    $("#initPassword").blur(function(){
-        var initPassword = $(this).val();
-        if(initPassword != ''){
-            invalid.initPassword = false;
-            $(this).alertTip2("success", "OK!")
+
+    // 同時監聽 checkbox 的變化，當 checkbox 的值改變的時候(觸發 change 事件)
+    // 檢查是否有勾選
+    $("#allow_box").children().change(function(){
+        var res = [];
+        // 重頭遍歷 checkbox 的狀態，並將選中 checkbox 的結果放入矩陣中，再重新放回輸入框
+        $("#allow_box").children().find(":checked").each(function(){
+            // 此時的 this 指向被遍歷的 checkbox
+            res.push($(this).val());
+        })
+        console.log(res.length)
+
+        if(res.length == 0){
+            invalid.allow = true;
+            $("#allow_box").alertTip2("danger", "請選擇可選課的年級")
         }else{
-            // after 表示某元素後方建立新元素，以靜態方法產生
-            $(this).alertTip2("danger", "密碼不能為空")
-            invalid.initPassword = true;
+            invalid.allow = false;
+            $("#allow_box").clearTip();
         }
     })
-
 
 
     // 當輸入框在輸入時，應該消除其警告框
@@ -218,36 +278,56 @@
     // 當提交按鈕按下時，檢查輸入框是否都合格，若合格便向後端發送 post 請求
     $("#subBtn").click(function(){
         // 獲得輸入框的值
-        var stu_id = $("#stu_id").val();
+        var cid = $("#cid").val();
         var Name = $("#Name").val();
-        var grade = $("#grade").val();
-        var initPassword = $("#initPassword").val();
+        var courseDay = $("#courseDay").val();
+        var teacher = $("#teacher").val();
+        var maxMember = $("#maxMember").val();
+        var intro = $("#intro").val();
+        
+        // 限制年級比較麻煩，要用遍歷的
+        var allow = (function(){
+            var arr = [];
+            // 獲得 checkbox 的結果(值為 checked 者)，並進行遍歷
+            $("input[name=allow]:checked").each(function(index, item){
+                arr.push($(this).val());
+            });
+            // 回傳 arr 矩陣
+            return arr;
+        })();
 
-        // 向後端提交資料
-        $.post('/admin/students/add', {
-            "stu_id" : stu_id,
-            "Name" : Name,
-            "grade" : grade,
-            "initPassword" : initPassword
-        }, function(mes){
-            // 成功跳提示，並清除輸入框內容，以及重置 invalid 物件
-            if(mes.results == 1){
-                alert('已成功新增學生！')
-                $.each($('[checkValid]'), function(index, item){
-                    $(item).val('').clearTip();
-                });
-            }else if(mes.results == -1){
-                alert('伺服器出錯了..')
-            }else if(mes.results == -2){
-                alert('別亂改網頁原始碼，我還是會知道你學號不正確的！')
-            }else if(mes.results == -3){
-                alert('別亂改網頁原始碼，我還是會知道你名字沒有填的！')
-            }else if(mes.results == -4){
-                alert('別亂改網頁原始碼，我還是會知道你年級還沒選的！')
-            }else if(mes.results == -5){
-                alert('別亂改網頁原始碼，我還是會知道你密碼還沒填的！')
-            }else if(mes.results == -6){
-                alert('別亂改網頁原始碼，我還是會知道你學號是重複的！')
+        // 向後端提交資料，但可選課年級為矩陣，所以用 ajax 寫法，而不是直接用 POST
+        $.ajax({
+            "url" : '/admin/courses/add',
+            "type" : "post",
+            "dataType" : "json",
+            "data" : {
+                "cid"       : cid,
+                "Name"      : Name,
+                "courseDay" : courseDay,
+                "teacher"   : teacher,
+                "maxMember" : maxMember,
+                "intro"     : intro,
+                "allow"     : allow
+            },
+            "traditional" : true,  // 當 data 型態為 json，而值包含"矩陣"(如本篇的 allow)，該選項能讓 key 保持正常，不然會把 key 改寫為 'allow[]'
+
+            "success" : function(mes){
+                // 成功跳提示，並清除輸入框內容，以及重置 invalid 物件
+                if(mes.results == 1){
+                    alert('已成功新增課程！')
+                    $.each($('[checkValid]'), function(index, item){
+                        $(item).val('').clearTip();
+                    });
+                }else if(mes.results == -1){
+                    alert('伺服器出錯..')
+                }else if(mes.results == -2){
+                    alert('每項都不能留白好嗎..')
+                }else if(mes.results == -3){
+                    alert('沒人選課，還是別開了吧..')
+                }else if(mes.results == -4){
+                    alert('課程編號重複了..')
+                }
             }
         })
     })
