@@ -38,16 +38,21 @@ app.post("/admin/students/add"      , adminStudentsCtrl.doAdminStudentsAdd);    
 app.delete("/admin/students/delete" , adminStudentsCtrl.deleteStudents);           // 管理員頁面 - 學生主頁面(刪除學生)
 app.get("/admin/students/download"  , adminStudentsCtrl.downloadStudents);         // 管理員頁面 - 學生主頁面(下載學生資料)
  
-app.get("/studentsData/allExport"   , adminStudentsCtrl.showAdminAllStudents);     // 學生主頁面 : Ajax 接口(前端獲取資料) - 獲取所有學生資料
-app.get("/studentsData/partExport"  , adminStudentsCtrl.showAdminPartStudents);    // 學生主頁面 : Ajax 接口(前端獲取資料) - 獲取部分學生資料
-app.post("/studentsData/:sid"       , adminStudentsCtrl.updateStudent);            // 學生主頁面 : Ajax 接口(後端獲取資料) - 修改學生
-app.propfind("/studentsData/:sid"   , adminStudentsCtrl.checkStudentExist);        // 學生主頁面 : Ajax 接口(後端獲取資料) - 檢查學生學號是否存在
+app.get("/studentsData/allExport"   , adminStudentsCtrl.showAdminAllStudents);     // Ajax 接口(前端獲取資料) : 學生主頁面 - 獲取所有學生資料
+app.get("/studentsData/partExport"  , adminStudentsCtrl.showAdminPartStudents);    // Ajax 接口(前端獲取資料) : 學生主頁面 - 獲取部分學生資料
+app.post("/studentsData/:sid"       , adminStudentsCtrl.updateStudent);            // Ajax 接口(後端獲取資料) : 學生主頁面 - 修改學生
+app.propfind("/studentsData/:sid"   , adminStudentsCtrl.checkStudentExist);        // Ajax 接口(後端獲取資料) : 學生主頁面 - 檢查學生學號是否存在
 
 app.get("/admin/courses"           , adminCoursesCtrl.showAdminCourses);        // 管理員頁面 - 課程管理頁面
 app.get("/admin/courses/import"    , adminCoursesCtrl.showAdminCoursesImport);  // 管理員頁面 - 導入課程頁面
 app.post("/admin/courses/import"   , adminCoursesCtrl.uploadCoursesJSON);      // 管理員頁面 - 導入課程頁面(上傳課程資料)
 app.get("/admin/courses/add"       , adminCoursesCtrl.showAdminCoursesAdd);   // 管理員頁面 - 新增課程頁面
 app.post("/admin/courses/add"      , adminCoursesCtrl.doAdminCoursesAdd);     // 管理員頁面 - 新增課程頁面(增加一門課程至資料庫)
+app.delete("/admin/courses/delete", adminCoursesCtrl.deleteCourses);      // 管理員頁面 - 課程主頁面(刪除課程)
+
+app.get("/coursesData", adminCoursesCtrl.showCourses);  // Ajax 接口(前端獲取資料) : 課程清單 - 獲取所有課程資料
+app.post("/admin/courses/", adminCoursesCtrl.updateCourse);  // Ajax 接口(後端獲取資料) : 課程清單 - 修改課程資料
+
 
 
 app.get("/admin/reports"           , adminCtrl.showAdminReports);  // 管理員頁面 - 課程報表頁面

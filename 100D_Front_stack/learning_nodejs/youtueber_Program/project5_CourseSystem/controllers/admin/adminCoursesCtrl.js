@@ -75,6 +75,99 @@ exports.uploadCoursesJSON = function(req, res){
 }
 
 
+// 課程清單接口，依照前端發送的請求，發送對應的課程資料
+// 前端傳遞GET請求，路由例如 coursesData?_search=false&nd=1587007004897&rows=10&page=1&sidx=cid&sord=asc
+// 解析此路由，以獲得對應的課程資料，再將其傳至 Ajax 接口
+exports.showCourses = function(req, res){
+    // 解析GET請求
+    var page = url.parse(req.url, true).query.page; // 目前讀取的是第幾頁
+    var rows = url.parse(req.url, true).query.rows; // 每頁要顯示幾筆資料
+    var sidx = url.parse(req.url, true).query.sidx; // 以哪個 index 排序
+    var sord = url.parse(req.url, true).query.sord; // 排序方式
+
+    // 若有輸入快速查詢，則會放在 keyword 屬性中
+    var keyword = url.parse(req.url, true).query.keyword; // 快速查詢字元
+    if(keyword === undefined || keyword == ""){
+        var findFilter = {};    
+    }else{
+        // 將快速查詢的結果轉成正規表達式物件，並做全局搜索，意即 /keyword/g  (其中 keyword 是網址列中的參數)
+        var regexp = new RegExp(keyword, "g");
+
+        // 製作搜尋格式，待會會放在 find()、count() 中
+        var findFilter = {
+            $or : [
+                    {"cid"       : regexp},
+                    {"Name"      : regexp},
+                    {"allow"     : regexp},
+                    {"courseDay" : regexp},
+                    {"teacher"   : regexp},
+                    {"intro"     : regexp}
+            ]
+        }
+    }
+
+    // 若採用升冪排序，則 sordNumber 為 1
+    var sordNumber = sord == 'asc' ? 1 : -1;
+
+    // 因為不能確定以哪個 index 排序，所以建立一個 JSON 物件，並附上屬性
+    var sordObj = {};
+    sordObj[sidx] = sordNumber;
+
+    // 依照前端要求，輸出對應的學生資料
+    Course.count(findFilter, function(err, count){
+        if(err){console.log(err)}
+        var total = Math.ceil(count / rows);  // jqGrid 的總頁數(會根據 rows 而有所改變)
+
+        // 輸出學生資料，格式必須依照 jqGrid 的 API 要求
+        Course.find(findFilter).sort(sordObj).limit(parseInt(rows)).skip(rows * (page-1)).exec(function(err, results){
+            res.json({
+                "page"    : page,
+                "total"   : total,
+                "records" : count,
+                "rows"    : results
+            });
+        });
+    });
+}
+
+// 更新課程資料(課程清單頁面，修改後會發送 POST 請求，內含修改資料，在後端修改後，向前端發送修改結果)
+// 因為是 POST 請求，所以用 formidable 解析
+exports.updateCourse = function(req, res){   
+    const form = formidable({});
+    form.parse(req, (err, fields, files) => {
+        // 因為課程頁面的修改是採用 row 修改，所以傳過來是所有欄位的資料，而不項學生是各別 cell 的資料
+        // 直接從表單獲得課程編號
+        var cid = fields.cid;
+
+        // 修改資料庫數據
+        Course.find({"cid":cid}, function(err, results){
+            if(err){
+                res.send({"results": -2});  // 向前端回傳 -2 表示數據庫錯誤
+                return;
+            }
+            if(results.length == 0){
+                res.send({"results": -1});  // 向前端回傳 -1 表示資料庫沒有這筆資料
+                return;
+            }
+            var thisCourse = results[0];
+            thisCourse.Name      = fields.Name;
+            thisCourse.courseDay = fields.courseDay;
+            thisCourse.teacher   = fields.teacher;
+            thisCourse.maxMember = fields.maxMember;
+            thisCourse.intro     = fields.intro;
+            thisCourse.allow     = fields.allow.split(",");  // 因為前端傳來是字串，但後端要存成矩陣
+            thisCourse.save(function(err){
+                if(err){
+                    res.send({"results": -2}); // 向前端回傳 -2 表示數據庫錯誤
+                }else{
+                    res.send({"results":  1}); // 向前端回傳 1 表示修改成功
+                }
+            })
+        })
+    })
+}
+
+
 
 exports.showAdminCoursesAdd = function(req, res){
     res.render("admin/courses/adminCoursesAdd", {
@@ -86,4 +179,24 @@ exports.showAdminCoursesAdd = function(req, res){
 
 exports.doAdminCoursesAdd = function(req, res){
 
+}
+
+
+// 前端發送 delete 請求，並將欲刪除對象之資料放在 post 表單
+// 一樣以 formidable 解析 post 表單，再刪除資料庫中的資料
+exports.deleteCourses = function(req, res){
+    // 解析 post 資料
+    const form = formidable({});
+    form.parse(req, (err, fields, files) => {
+        var cid = fields.arr;
+        // 直接從資料庫刪除學生
+        Course.remove({"cid" : cid}, function(err, results){
+            if(err){
+                res.json({"results" : -1});
+                return;
+            }
+            res.json({"results" : results.deletedCount});
+
+        })
+    })
 }

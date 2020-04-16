@@ -61,7 +61,7 @@
 
                         // 向後端發送 Ajax 請求(採用POST請求)，以利後端修改學生資料，並等待後端回應
                         $.post('/studentsData/' + sid,{
-                            "stu_id" : rowid,
+                            "stu_id" : sid,
                             "cellName" : cellname,
                             "value" : value
                         }, function(mes){
