@@ -218,8 +218,7 @@ exports.doAdminStudentsAdd = function(req, res){
         var stu_id = fields.stu_id;
         var Name = fields.Name;
         var grade = fields.grade;
-        var initpassword = fields.initpassword;
-
+        var password = fields.password;
 
     /*--------------------驗證流程--------------------*/
         // 驗證學號是否合格
@@ -241,7 +240,7 @@ exports.doAdminStudentsAdd = function(req, res){
         }
 
         // 驗證初始密碼
-        if(initpassword == ''){
+        if(password == ''){
             res.json({"results" : -5});  // -5 表示初始密碼未設置
             return;
         }
@@ -261,11 +260,12 @@ exports.doAdminStudentsAdd = function(req, res){
                 stu_id : fields.stu_id,
                 Name   : fields.Name,
                 grade  : fields.grade,
-                initpassword : fields.initpassword
+                password : fields.password
             });
             // 儲存至資料庫
             s.save(function(err){
                 if(err){
+                    console.log(err)
                     res.json({"results" : -1});  // -1 表示伺服器出錯
                     return;
                 }

@@ -69,7 +69,7 @@
                             初始密碼：
                         </p>
                         <p>
-                            <input type="text" class="form-control" id="initPassword" checkValid />
+                            <input type="text" class="form-control" id="password" checkValid />
                         </p>
 
                         <p>
@@ -88,7 +88,7 @@
             "stu_id" : true,
             "Name"   : true,
             "grade"  : true,
-            "initPassword" : true
+            "password" : true
         }
     }
     var invalid = invalidInit();
@@ -176,15 +176,15 @@
     })    
 
     // 提供初始密碼
-    $("#initPassword").blur(function(){
-        var initPassword = $(this).val();
-        if(initPassword != ''){
-            invalid.initPassword = false;
+    $("#password").blur(function(){
+        var password = $(this).val();
+        if(password != ''){
+            invalid.password = false;
             $(this).alertTip2("success", "OK!")
         }else{
             // after 表示某元素後方建立新元素，以靜態方法產生
             $(this).alertTip2("danger", "密碼不能為空")
-            invalid.initPassword = true;
+            invalid.password = true;
         }
     })
 
@@ -221,14 +221,14 @@
         var stu_id = $("#stu_id").val();
         var Name = $("#Name").val();
         var grade = $("#grade").val();
-        var initPassword = $("#initPassword").val();
+        var password = $("#password").val();
 
         // 向後端提交資料
         $.post('/admin/students/add', {
             "stu_id" : stu_id,
             "Name" : Name,
             "grade" : grade,
-            "initPassword" : initPassword
+            "password" : password
         }, function(mes){
             // 成功跳提示，並清除輸入框內容，以及重置 invalid 物件
             if(mes.results == 1){

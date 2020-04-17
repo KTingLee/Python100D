@@ -17,7 +17,7 @@ mongoose.connect('mongodb://localhost/CourseSystem', {useNewUrlParser: true});
 // 設定 session
 app.use(session({
     secret : "yourSession",  // session 的名稱
-    cookie : { maxAge : 60000 },  // 設定 session 同時會給前端 cookie，未來依此 cookie 存取該 session，所以要設定 cookie 過期時間
+    cookie : { maxAge : 600000 },  // 設定 session 同時會給前端 cookie，未來依此 cookie 存取該 session，所以要設定 cookie 過期時間
     resave : false,
     saveUninitialized : true
 }));
@@ -43,17 +43,25 @@ app.get("/studentsData/partExport"  , adminStudentsCtrl.showAdminPartStudents); 
 app.post("/studentsData/:sid"       , adminStudentsCtrl.updateStudent);            // Ajax 接口(後端獲取資料) : 學生主頁面 - 修改學生
 app.propfind("/studentsData/:sid"   , adminStudentsCtrl.checkStudentExist);        // Ajax 接口(後端獲取資料) : 學生主頁面 - 檢查學生學號是否存在
 
-app.get("/admin/courses"           , adminCoursesCtrl.showAdminCourses);        // 管理員頁面 - 課程管理頁面
-app.get("/admin/courses/import"    , adminCoursesCtrl.showAdminCoursesImport);  // 管理員頁面 - 導入課程頁面
+
+app.get("/admin/courses"           , adminCoursesCtrl.showAdminCourses);       // 管理員頁面 - 課程管理頁面
+app.get("/admin/courses/import"    , adminCoursesCtrl.showAdminCoursesImport); // 管理員頁面 - 導入課程頁面
 app.post("/admin/courses/import"   , adminCoursesCtrl.uploadCoursesJSON);      // 管理員頁面 - 導入課程頁面(上傳課程資料)
-app.get("/admin/courses/add"       , adminCoursesCtrl.showAdminCoursesAdd);   // 管理員頁面 - 新增課程頁面
-app.post("/admin/courses/add"      , adminCoursesCtrl.doAdminCoursesAdd);     // 管理員頁面 - 新增課程頁面(增加一門課程至資料庫)
-app.delete("/admin/courses/delete", adminCoursesCtrl.deleteCourses);      // 管理員頁面 - 課程主頁面(刪除課程)
+app.get("/admin/courses/add"       , adminCoursesCtrl.showAdminCoursesAdd);    // 管理員頁面 - 新增課程頁面
+app.post("/admin/courses/add"      , adminCoursesCtrl.doAdminCoursesAdd);      // 管理員頁面 - 新增課程頁面(增加一門課程至資料庫)
+app.delete("/admin/courses/delete", adminCoursesCtrl.deleteCourses);           // 管理員頁面 - 課程主頁面(刪除課程)
 
+app.get("/coursesData", adminCoursesCtrl.showCourses);                         // Ajax 接口(前端獲取資料) : 課程清單 - 獲取所有課程資料
+app.post("/admin/courses/", adminCoursesCtrl.updateCourse);                    // Ajax 接口(後端獲取資料) : 課程清單 - 修改課程資料
+app.propfind("/coursesData/:cid"   , adminCoursesCtrl.checkCourseExist);       // Ajax 接口(後端獲取資料) : 學生主頁面 - 檢查學生學號是否存在
 
-app.get("/coursesData", adminCoursesCtrl.showCourses);  // Ajax 接口(前端獲取資料) : 課程清單 - 獲取所有課程資料
-app.post("/admin/courses/", adminCoursesCtrl.updateCourse);  // Ajax 接口(後端獲取資料) : 課程清單 - 修改課程資料
-app.propfind("/coursesData/:cid"   , adminCoursesCtrl.checkCourseExist);        // Ajax 接口(後端獲取資料) : 學生主頁面 - 檢查學生學號是否存在
+app.get("/", mainCtrl.showIndex);  // 顯示首頁
+app.get("/login", mainCtrl.showLogin);  // 顯示登入頁面
+app.post("/login", mainCtrl.doLogin);  // 驗證登入內容
+app.get("/logout", mainCtrl.doLogout);  // 執行登出動作
+app.get("/changePWD", mainCtrl.showChangePWD);  // 顯示密碼更改頁面
+app.post("/changePWD", mainCtrl.doChangePWD);  // 執行修改密碼
+
 
 
 app.get("/admin/reports"           , adminCtrl.showAdminReports);  // 管理員頁面 - 課程報表頁面
