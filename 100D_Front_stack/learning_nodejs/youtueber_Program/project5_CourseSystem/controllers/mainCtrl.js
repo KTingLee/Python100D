@@ -28,6 +28,7 @@ exports.showIndex = function(req, res){
         var userID   = req.session.userID;
         var userName = req.session.userName;
         var initpassword = req.session.initpassword;
+        var grade = req.session.grade;
 
         // 若為初始密碼，則仍無法讀取首頁，必須強制跳轉到更改密碼頁面
         if(initpassword){
@@ -35,7 +36,8 @@ exports.showIndex = function(req, res){
         }else{
             res.render("index", {
                 "userID"   : userID,
-                "userName" : userName
+                "userName" : userName,
+                "userGrade" : grade
             })
         }
     }
@@ -86,6 +88,7 @@ exports.doLogin = function(req, res){
                     // 也可以再發其他東西至 session 中
                     req.session.userID = id;
                     req.session.userName = thisStudent.Name;
+                    req.session.grade = thisStudent.grade;
                     req.session.initpassword = initpassword;
                     // 記得要先發完 cooki 後才 res.send 或 res.json
                     res.json({"results" : 1});
@@ -102,6 +105,7 @@ exports.doLogin = function(req, res){
                     // 也可以再發其他東西至 session 中
                     req.session.userID = id;
                     req.session.userName = thisStudent.Name;
+                    req.session.grade = thisStudent.grade;
                     req.session.initpassword = initpassword;
                     // 記得要先發完 cooki 後才 res.send 或 res.json
                     res.json({"results" : 1});
@@ -130,11 +134,13 @@ exports.showChangePWD = function(req, res){
     var userID = req.session.userID;
     var userName = req.session.userName;
     var initpassword = req.session.initpassword;
+    var grade = req.session.grade;
 
     res.render("changePWD",{
         "userID"   : userID,
         "userName" : userName,
-        "initpassword" : initpassword
+        "initpassword" : initpassword,
+        "userGrade" : grade
     })
 }
 
