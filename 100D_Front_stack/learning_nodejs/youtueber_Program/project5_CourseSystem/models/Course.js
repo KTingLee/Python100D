@@ -9,7 +9,7 @@ var courseSchema = new mongoose.Schema({
     "cid"       : String,
     "Name"      : String,
     "courseDay" : String,   // 開課日期(星期幾)
-    "maxMember" : Number,
+    "member"    : Number,
     "allow"     : [String],
     "teacher"   : String,
     "intro"     : String

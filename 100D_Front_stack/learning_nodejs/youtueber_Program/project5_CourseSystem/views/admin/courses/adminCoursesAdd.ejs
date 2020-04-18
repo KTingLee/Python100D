@@ -83,7 +83,7 @@
                             人數：
                         </p>
                         <p>
-                            <input type="text" class="form-control" id="maxMember" checkValid />
+                            <input type="text" class="form-control" id="member" checkValid />
                         </p>
                         <p>
                             課程簡介：
@@ -110,7 +110,7 @@
             "Name"      : true,
             "courseDay" : true,
             "teacher"   : true,
-            "maxMember" : true,
+            "member"    : true,
             "intro"     : true,
             "courseDay" : true,
             "allow"     : true
@@ -203,15 +203,15 @@
 
 
     // 驗證課程人數是否有提供，最低 10 人。
-    $("#maxMember").blur(function(){
+    $("#member").blur(function(){
         var member = $(this).val();
         if(member >= 10){
-            invalid.maxMember = false;
+            invalid.member = false;
             $(this).alertTip2("success", "OK!")
         }else{
             // after 表示某元素後方建立新元素，以靜態方法產生
             $(this).alertTip2("danger", "課程人數最低10人，否則不開課")
-            invalid.maxMember = true;
+            invalid.member = true;
         }
     })
 
@@ -282,7 +282,7 @@
         var Name = $("#Name").val();
         var courseDay = $("#courseDay").val();
         var teacher = $("#teacher").val();
-        var maxMember = $("#maxMember").val();
+        var member = $("#member").val();
         var intro = $("#intro").val();
         
         // 限制年級比較麻煩，要用遍歷的
@@ -306,7 +306,7 @@
                 "Name"      : Name,
                 "courseDay" : courseDay,
                 "teacher"   : teacher,
-                "maxMember" : maxMember,
+                "member"    : member,
                 "intro"     : intro,
                 "allow"     : allow
             },

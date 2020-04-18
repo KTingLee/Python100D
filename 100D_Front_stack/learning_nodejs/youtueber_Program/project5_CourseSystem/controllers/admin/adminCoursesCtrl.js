@@ -153,7 +153,7 @@ exports.updateCourse = function(req, res){
             thisCourse.Name      = fields.Name;
             thisCourse.courseDay = fields.courseDay;
             thisCourse.teacher   = fields.teacher;
-            thisCourse.maxMember = fields.maxMember;
+            thisCourse.member    = fields.member;
             thisCourse.intro     = fields.intro;
             thisCourse.allow     = fields.allow.split(",");  // 因為前端傳來是字串，但後端要存成矩陣
             thisCourse.save(function(err){
@@ -208,7 +208,7 @@ exports.doAdminCoursesAdd = function(req, res){
         var Name      = fields.Name
         var courseDay = fields.courseDay
         var teacher   = fields.teacher
-        var maxMember = fields.maxMember
+        var member    = fields.member
         var intro     = fields.intro
         var allow     = fields.allow
 
@@ -223,7 +223,7 @@ exports.doAdminCoursesAdd = function(req, res){
         }
 
         // 驗證選課人數是否大於等於 10 人
-        if(maxMember < 10){
+        if(member < 10){
             res.json({"results" : -3});  // -3 表示選課人數不足
             return;
         }
@@ -245,7 +245,7 @@ exports.doAdminCoursesAdd = function(req, res){
                 "Name"      : Name,
                 "courseDay" : courseDay,
                 "teacher"   : teacher,
-                "maxMember" : maxMember,
+                "member"    : member,
                 "intro"     : intro,
                 "allow"     : allow
             });
