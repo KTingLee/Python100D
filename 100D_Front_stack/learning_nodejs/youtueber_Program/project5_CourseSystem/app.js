@@ -61,6 +61,9 @@ app.post("/login", mainCtrl.doLogin);  // 驗證登入內容
 app.get("/logout", mainCtrl.doLogout);  // 執行登出動作
 app.get("/changePWD", mainCtrl.showChangePWD);  // 顯示密碼更改頁面
 app.post("/changePWD", mainCtrl.doChangePWD);  // 執行修改密碼
+app.get("/checkCourses", mainCtrl.checkCourses);  // 執行修改密碼
+app.post("/getCourse",  mainCtrl.getCourse);  // 選修課程
+app.post("/dropCourse", mainCtrl.dropCourse); // 退選課程
 
 
 

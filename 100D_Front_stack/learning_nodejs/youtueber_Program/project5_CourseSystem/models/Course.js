@@ -12,7 +12,8 @@ var courseSchema = new mongoose.Schema({
     "member"    : Number,
     "allow"     : [String],
     "teacher"   : String,
-    "intro"     : String
+    "intro"     : String,
+    "myStudents": [String]
 });
 
 
